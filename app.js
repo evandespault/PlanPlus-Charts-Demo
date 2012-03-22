@@ -44,7 +44,7 @@ app.get('/', routes.index);
 // Database
 
 client = new pg.Client(dbConnectionString);
-client.connect();
+//client.connect();
 //query = client.query('CREATE TABLE chartdata (date date, value int)');
 //query.on('end', function() { client.end(); });
 
