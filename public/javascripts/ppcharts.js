@@ -1,114 +1,113 @@
 var chart;
-var chartData = [{date: new Date(2012, 3, 1),
-    price: 20
-}, {
-    date: new Date(2012, 3, 2),
-    price: 75
-}, {
-    date: new Date(2012, 3, 3),
-    price: 15
-}, {
-    date: new Date(2012, 3, 4),
-    price: 75
-}, {
-    date: new Date(2012, 3, 5),
-    price: 158
-}, {
-    date: new Date(2012, 3, 6),
-    price: 57
-}, {
-    date: new Date(2012, 3, 7),
-    price: 107
-}, {
-    date: new Date(2012, 3, 8),
-    price: 89
-}, {
-    date: new Date(2012, 3, 9),
-    price: 75
-}, {
-    date: new Date(2012, 3, 10),
-    price: 132
-}, {
-    date: new Date(2012, 3, 11),
-    price: 158
-}, {
-    date: new Date(2012, 3, 12),
-    price: 56
-}, {
-    date: new Date(2012, 3, 13),
-    price: 169
-}, {
-    date: new Date(2012, 3, 14),
-    price: 24
-}, {
-    date: new Date(2012, 3, 15),
-    price: 147
-}];
-
-var average = 90.4;
+var chartData = [];
+var chartCursor;
 
 AmCharts.ready(function () {
+	// generate some data first
+	generateChartData();
 
-    // SERIAL CHART    
-    chart = new AmCharts.AmSerialChart();
-    chart.pathToImages = "../amcharts/images/";
-    chart.zoomOutButton = {
-        backgroundColor: '#000000',
-        backgroundAlpha: 0.15
-    };
-    chart.dataProvider = chartData;
-    chart.categoryField = "date";
+	// SERIAL CHART    
+	chart = new AmCharts.AmSerialChart();
+	chart.pathToImages = "../images/";
+	chart.zoomOutButton = {
+		backgroundColor: '#000000',
+		backgroundAlpha: 0.15
+	};
+	chart.dataProvider = chartData;
+	chart.categoryField = "date";
 
-    // AXES
-    // category
-    var categoryAxis = chart.categoryAxis;
-    categoryAxis.parseDates = true; // as our data is date-based, we set parseDates to true
-    categoryAxis.minPeriod = "DD"; // our data is daily, so we set minPeriod to DD
-    categoryAxis.dashLength = 1;
-    categoryAxis.gridAlpha = 0.15;
-    categoryAxis.axisColor = "#DADADA";
+	// listen for "dataUpdated" event (fired when chart is rendered) and call zoomChart method when it happens
+	chart.addListener("dataUpdated", zoomChart);
 
-    // value                
-    var valueAxis = new AmCharts.ValueAxis();
-    valueAxis.axisColor = "#DADADA";
-    valueAxis.dashLength = 1;
-    valueAxis.logarithmic = true; // this line makes axis logarithmic
-    chart.addValueAxis(valueAxis);
+	// AXES
+	// category
+	var categoryAxis = chart.categoryAxis;
+	categoryAxis.parseDates = true; // as our data is date-based, we set parseDates to true
+	categoryAxis.minPeriod = "DD"; // our data is daily, so we set minPeriod to DD
+	categoryAxis.dashLength = 1;
+	categoryAxis.gridAlpha = 0.15;
+	categoryAxis.axisColor = "#DADADA";
+	
+	// value                
+	var valueAxis = new AmCharts.ValueAxis();
+	valueAxis.axisAlpha = 0.2;
+	valueAxis.dashLength = 1;
+	chart.addValueAxis(valueAxis);
 
-    // GUIDE for average
-    var guide = new AmCharts.Guide();
-    guide.value = average;
-    guide.lineColor = "#CC0000";
-    guide.dashLength = 4;
-    guide.label = "average";
-    guide.inside = true;
-    guide.lineAlpha = 1;
-    valueAxis.addGuide(guide);
+	// GRAPH
+	var graph = new AmCharts.AmGraph();
+	graph.title = "red line";
+	graph.valueField = "visits";
+	graph.bullet = "round";
+	graph.bulletBorderColor = "#FFFFFF";
+	graph.bulletBorderThickness = 2;
+	graph.lineThickness = 2;
+	graph.lineColor = "#b5030d";
+	graph.negativeLineColor = "#0352b5";
+	graph.hideBulletsCount = 50; // this makes the chart to hide bullets when there are more than 50 series in selection
+	chart.addGraph(graph);
 
+	// CURSOR
+	chartCursor = new AmCharts.ChartCursor();
+	chartCursor.cursorPosition = "mouse";
+	chart.addChartCursor(chartCursor);
 
-    // GRAPH
-    var graph = new AmCharts.AmGraph();
-    graph.type = "smoothedLine";
-    graph.bullet = "round";
-    graph.bulletColor = "#FFFFFF";
-    graph.bulletBorderColor = "#00BBCC";
-    graph.bulletBorderThickness = 2;
-    graph.bulletSize = 7;
-    graph.title = "Price";
-    graph.valueField = "price";
-    graph.lineThickness = 2;
-    graph.lineColor = "#00BBCC";
-    chart.addGraph(graph);
+	// SCROLLBAR
+	var chartScrollbar = new AmCharts.ChartScrollbar();
+	chartScrollbar.graph = graph;
+	chartScrollbar.scrollbarHeight = 40;
+	chartScrollbar.color = "#FFFFFF";
+	chartScrollbar.autoGridCount = true;
+	chart.addChartScrollbar(chartScrollbar);
 
-    // CURSOR
-    var chartCursor = new AmCharts.ChartCursor();
-    chartCursor.cursorPosition = "mouse";
-    chart.addChartCursor(chartCursor);
+	// WRITE
+	chart.write("chartdiv");
+});
 
-    // SCROLLBAR
-    var chartScrollbar = new AmCharts.ChartScrollbar();
-    chart.addChartScrollbar(chartScrollbar);
+// generate some random data, quite different range
+function generateChartData() {
+	var firstDate = new Date();
+	firstDate.setDate(firstDate.getDate() - 500);
 
-    // WRITE
-    chart.write("chartdiv");
+	for (var i 	= 0; i < 500; i++) {
+		var newDate = new Date(firstDate);
+		newDate.setDate(newDate.getDate() + i);
+
+		var visits = Math.round(Math.random() * 40) - 20;
+
+		chartData.push({
+			date: newDate,
+			visits: visits
+		});
+	}
+}
+
+// this method is called when chart is first inited as we listen for "dataUpdated" event
+function zoomChart() {
+	// different zoom methods can be used - zoomToIndexes, zoomToDates, zoomToCategoryValues
+	chart.zoomToIndexes(chartData.length - 40, chartData.length - 1);
+	chart.validateNow();
+}
+
+// changes cursor mode from pan to select
+function setPanSelect() {
+	if (document.getElementById("rb1").checked) {
+		chartCursor.pan = false;
+		chartCursor.zoomable = true;
+	} else {
+		chartCursor.pan = true;
+	}
+	chart.validateNow();
+}
+
+function regenerateChartData() {
+	chartData.length = 0;
+	generateChartData();
+	chart.validateData();
+	chart.write("chartdiv");
+}
+
+function saveChart() {
+	var svg = document.getElementById("chartdiv").childNodes[0].childNodes[0];
+	alert (svg);
 }

@@ -4,7 +4,6 @@ html(lang="en")
 		title= title
 		script(type="text/javascript", src="/javascripts/amcharts.js")
 		script(type="text/javascript", src="/javascripts/ppcharts.js")
-		script(type="text/javascript", src="/javascripts/chartdata.js")
 	body
 		h1= title
 		p 1. Random data generated in the browser (
@@ -12,4 +11,4 @@ html(lang="en")
 			)
 		div#chartdiv(style="width: 100%; height: 400px;")
 		p 2. 
-			a(onclick="saveChart()", href="#") Export to PDF
+			a(onclick="p()", href="#") Export to PDF
