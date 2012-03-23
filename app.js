@@ -2,17 +2,13 @@
  
 var express = require('express')
   , routes = require('./routes')
+	, mongo = require('mongoskin');
 //	, PDFDocument = require('pdfkit')
-	, pg = require('pg');
+//	, pg = require('pg');
 
 var port = process.env.PORT || 3000;
-
-var dbConnectionString = process.env.DATABASE_URL || "postgres://pbyaigfgdjgljt:Z4c6J5JtHK1OeXOMdFExlfJ-m6@pg60.sharedpg.heroku.com/blooming_lightning_28250" 
-	, client
-	, query;
-
-console.log(dbConnectionString);
-
+mongodb://<user>:<password>@staff.mongohq.com:10070/app3373805
+var dbConnectionString = 'staff.mongohq.com:10070/app3373805';
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -34,19 +30,21 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+console.log("Connecting to " + dbConnectionString);
+var conn = mongo.db(dbConnectionString);
+conn.collection('chartdata').find().toArray(function(err, items) {
+	if (err) throw err;
+	console.log(JSON.stringify(items));
+});
+
 // Routes
 
 app.get('/', routes.index);
+
 //app.get('/pdf/:id', function(req, res){
 //	res.send(req.params.id);
 //});
 
-// Database
-
-client = new pg.Client(dbConnectionString);
-client.connect();
-//query = client.query('CREATE TABLE chartdata (date date, value int)');
-//query.on('end', function() { client.end(); });
 
 // Start listening
 
