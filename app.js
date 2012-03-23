@@ -7,7 +7,7 @@ var express = require('express')
 
 var port = process.env.PORT || 3000;
 
-var dbConnectionString = "postgres://localhost:5000" || "postgres://pbyaigfgdjgljt:Z4c6J5JtHK1OeXOMdFExlfJ-m6@pg60.sharedpg.heroku.com/blooming_lightning_28250" 
+var dbConnectionString = process.env.DATABASE_URL || "postgres://pbyaigfgdjgljt:Z4c6J5JtHK1OeXOMdFExlfJ-m6@pg60.sharedpg.heroku.com/blooming_lightning_28250" 
 	, client
 	, query;
 
