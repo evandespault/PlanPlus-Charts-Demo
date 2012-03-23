@@ -7,7 +7,7 @@ var express = require('express')
 
 var port = process.env.PORT || 3000;
 
-var dbConnectionString = "postgres://pbyaigfgdjgljt:Z4c6J5JtHK1OeXOMdFExlfJ-m6@pg60.sharedpg.heroku.com/blooming_lightning_28250" 
+var dbConnectionString = "postgres://localhost:5000" || "postgres://pbyaigfgdjgljt:Z4c6J5JtHK1OeXOMdFExlfJ-m6@pg60.sharedpg.heroku.com/blooming_lightning_28250" 
 	, client
 	, query;
 
@@ -44,7 +44,7 @@ app.get('/', routes.index);
 // Database
 
 client = new pg.Client(dbConnectionString);
-//client.connect();
+client.connect();
 //query = client.query('CREATE TABLE chartdata (date date, value int)');
 //query.on('end', function() { client.end(); });
 
