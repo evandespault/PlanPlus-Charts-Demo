@@ -2,6 +2,8 @@ var chart;
 var chartData = [];
 var chartCursor;
 
+var mongo = require('mongodb');
+
 AmCharts.ready(function () {
 	// generate some data first
 	generateChartData();
@@ -66,20 +68,24 @@ AmCharts.ready(function () {
 
 // generate some random data, quite different range
 function generateChartData() {
-	var firstDate = new Date();
-	firstDate.setDate(firstDate.getDate() - 500);
+//	var firstDate = new Date();
+//	firstDate.setDate(firstDate.getDate() - 500);
 
 	for (var i 	= 0; i < 500; i++) {
-		var newDate = new Date(firstDate);
-		newDate.setDate(newDate.getDate() + i);
+//		var newDate = new Date(firstDate);
+//		newDate.setDate(newDate.getDate() + i);
 
-		var visits = Math.round(Math.random() * 40) - 20;
+//		var visits = Math.round(Math.random() * 40) - 20;
+//
+		var newDate = ;
+		var visits = ;
 
 		chartData.push({
 			date: newDate,
 			visits: visits
 		});
 	}
+*/
 }
 
 // this method is called when chart is first inited as we listen for "dataUpdated" event
