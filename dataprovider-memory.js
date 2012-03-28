@@ -5,7 +5,7 @@ var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
 DataProvider = function(host, port) {
-	this.db = new Db('test', new Server(host, port, {auto_reconnect: true}, {}));
+	this.db = new Db('app3373805', new Server(host, port, {auto_reconnect: true}, {}));
 	this.db.open(function(){});
 };
 
