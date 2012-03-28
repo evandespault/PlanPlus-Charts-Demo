@@ -3,12 +3,23 @@ html(lang="en")
 	head
 		title= title
 		script(type="text/javascript", src="/javascripts/amcharts.js")
+		script(type="text/javascript")
+			var chartData = [];
+			var newDate;
+			function submitForm() {
+				document.getElementById("html").value = document; //.getElementById("report").innerHTML;
+				document.forms["reportForm"].submit();
+			}
+		each datapoint in datapoints
+			script(type="text/javascript")
+				chartData.push({date: new Date("#{datapoint.date}"), visits: #{datapoint.value}});
 		script(type="text/javascript", src="/javascripts/ppcharts.js")
 	body
 		h1= title
-		p 1. Random data generated in the browser (
-			a(onclick="regenerateChartData()", href="#") regenerate
-			)
-		div#chartdiv(style="width: 100%; height: 400px;")
-		p 2. 
-			a(onclick="saveChart()", href="#") Export to PDF
+		h2 Random data generated in the browser
+		div#report(style="border: 1px solid gray")
+			h3 Sample report based on random data
+			div#chartdiv(style="width: 100%; height: 400px;") 
+		form#reportForm(method="post", action="/report", target="_new")
+			input(type="text", id="html", name="html", style="display:none")
+			input(type="button", value="Generate PDF report", onclick="submitForm()")

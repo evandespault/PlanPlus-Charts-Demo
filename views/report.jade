@@ -1,0 +1,14 @@
+doctype 5
+html(lang="en")
+	head
+		title= title
+		script(type="text/javascript", src="/javascripts/amcharts.js")
+		script(type="text/javascript")
+			var chartData = [];
+			var newDate;
+		each datapoint in datapoints
+			script(type="text/javascript")
+				chartData.push({date: new Date("#{datapoint.date}"), visits: #{datapoint.value}});
+		script(type="text/javascript", src="/javascripts/ppcharts.js")
+	body
+		h1= title
