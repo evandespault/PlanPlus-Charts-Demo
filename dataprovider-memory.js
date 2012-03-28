@@ -1,11 +1,15 @@
-var Db = require('mongodb').Db;
-var Connection = require('mongodb').Connection;
-var Server = require('mongodb').Server;
-var BSON = require('mongodb').BSON;
-var ObjectID = require('mongodb').ObjectID;
+// Load module dependencies
+var Db = require('mongodb').Db
+	, Connection = require('mongodb').Connection
+	, Server = require('mongodb').Server
+	, BSON = require('mongodb').BSON
+	, ObjectID = require('mongodb').ObjectID;
 
-DataProvider = function(host, port) {
-	this.db = new Db('app3373805', new Server(host, port, {auto_reconnect: true}, {}));
+// Construct data provider
+DataProvider = function(host, port, app) {
+	console.log("app: " + app + ", host: " + host + ", port: " + port);
+	this.db = new Db(app, new Server(host, port, {auto_reconnect: true}, {}));
+	console.log("this.db: " + this.db);
 	this.db.open(function(){});
 };
 
