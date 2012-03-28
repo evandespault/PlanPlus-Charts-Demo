@@ -7,7 +7,9 @@ var express = require('express')
 
 var port = process.env.PORT || 3000;
 //var dbConnectionString = 'mongodb://heroku:75912ba0d1319f1a04622f9837a6604b@staff.mongohq.com:10070/app3373805';
-var dbConnectionString = 'localhost:27017/test';
+var dbConnectionString = 'mongodb://staff.mongohq.com:10070/app3373805';
+//var dbConnectionString = 'mongodb://<user>:<password>@staff.mongohq.com:10070/app3373805';
+//var dbConnectionString = 'localhost:27017/test';
 var app = module.exports = express.createServer();
 
 // Configuration
