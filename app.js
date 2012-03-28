@@ -30,12 +30,12 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-var dataProvider = new DataProvider('localhost', 27017);
+var dataProvider = new DataProvider('staff.mongohq.com', 10070);
+//var dataProvider = new DataProvider('localhost', 27017);
 global.dataProvider = dataProvider; // naughty
 
 // Routes
 app.get('/', routes.index);
-app.get('/report', routes.report);
 app.post('/report', routes.report);
 
 // Start listening
