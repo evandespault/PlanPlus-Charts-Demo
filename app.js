@@ -3,7 +3,22 @@ var express = require('express')
   , routes = require('./routes')
 	, DataProvider = require('./dataprovider-memory').DataProvider
 	, mongo = require('mongodb');
-//	, PDFDocument = require('pdfkit');
+
+var settings = {};
+
+if (process.env.PORT) {
+	settings.environment = "production";
+	settings.port = process.env.PORT;
+	settings.db_host = "staff.mongohq.com";
+	settings.db_port = 10070;
+} else {
+	settings.environment = "development";
+	settings.port = 5000;
+	settings.db_host = "localhost";
+	settings.db_port = 27017;
+}
+
+console.log("PORT: " + settings.port);
 
 var port = process.env.PORT || 3000;
 //var dbConnectionString = 'mongodb://heroku:75912ba0d1319f1a04622f9837a6604b@staff.mongohq.com:10070/app3373805';
