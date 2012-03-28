@@ -2,8 +2,8 @@
 var express = require('express')
   , routes = require('./routes')
 	, DataProvider = require('./dataprovider-memory').DataProvider
-	, mongo = require('mongodb')
-	, PDFDocument = require('pdfkit');
+	, mongo = require('mongodb');
+//	, PDFDocument = require('pdfkit');
 
 var port = process.env.PORT || 3000;
 //var dbConnectionString = 'mongodb://heroku:75912ba0d1319f1a04622f9837a6604b@staff.mongohq.com:10070/app3373805';
