@@ -50,12 +50,13 @@ AmCharts.ready(function () {
 	chart.addChartCursor(chartCursor);
 
 	// SCROLLBAR
-	var chartScrollbar = new AmCharts.ChartScrollbar();
+/*	var chartScrollbar = new AmCharts.ChartScrollbar();
 	chartScrollbar.graph = graph;
 	chartScrollbar.scrollbarHeight = 40;
 	chartScrollbar.color = "#FFFFFF";
 	chartScrollbar.autoGridCount = true;
 	chart.addChartScrollbar(chartScrollbar);
+*/
 
 	// WRITE
 	chart.write("chartdiv");
