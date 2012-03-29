@@ -3,15 +3,52 @@ var Db = require('mongodb').Db
 	, Connection = require('mongodb').Connection
 	, Server = require('mongodb').Server
 	, BSON = require('mongodb').BSON
-	, ObjectID = require('mongodb').ObjectID;
+	, ObjectID = require('mongodb').ObjectID
+	, url = require('url')
+	, mongodb = require('mongodb');
 
 // Construct data provider
 DataProvider = function(host, port, app) {
 	console.log("app: " + app + ", host: " + host + ", port: " + port);
-	this.db = new Db(app, new Server(host, port, {auto_reconnect: true}, {}));
-	this.db.open(function(){});
-	this.db.authenticate("evan", "evan", {});
-	console.log("db opened: " + this.db); 
+//	this.db = new Db(app, new Server(host, port, {auto_reconnect: true}, {}));
+//	this.db.open(function(){});
+//	this.db.authenticate("evan", "evan", {});
+
+	var dbUrl = process.env.MONGOHQ_URL || "mongodb://" + host + ":" + port + "/" + app;
+	var connectionUrl = url.parse(dbUrl);
+	var dbName = connectionUrl.pathname.replace(/^\//, '');
+
+	Db.connect(dbUrl, function(error, client) {
+		if (error) throw error;
+
+		client.collectionNames(function(error, names) {
+			if (error) throw error;
+
+			var lastCollection = null;
+			names.forEach(function(colData) {
+				var colName = colData.name.replace(dbName + ".", '')
+				lastCollection = colName;
+			});
+
+			var collection = new mongodb.Collection(client, lastCollection);
+			var documents = collection.find({}, {limit:5});
+
+			documents.count(function(error, count) {
+				documents.toArray(function(error, docs) {
+					if (error) throw error;
+
+					docs.forEach(function(doc) {
+						console.log(doc);
+					});
+
+					client.close();
+
+					console.log("connected to " + dbUrl + " " + connectionUrl + " " + dbName + " " + client); 
+				});
+			});
+		});
+	});
+
 };
 
 DataProvider.prototype.getCollection = function(callback) {
