@@ -19,11 +19,11 @@ DataProvider = function(host, port, app) {
 	var dbName = connectionUrl.pathname.replace(/^\//, '');
 	console.log("dbUrl: " + dbUrl);
 
-	Db.connect(dbUrl, function(error, client) {
+	Db.connect(dbUrl, function(error, db) {
 		if (error) throw error;
 
-		//client.authenticate("evan", "evan", {});
-
+		DataProvider.prototype.db = db;
+		/*
 		client.collectionNames(function(error, names) {
 			if (error) throw error;
 
@@ -50,6 +50,7 @@ DataProvider = function(host, port, app) {
 				});
 			});
 		});
+		*/
 	});
 
 };
