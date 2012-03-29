@@ -7,17 +7,19 @@ var express = require('express')
 // Create and configure the server
 var app = module.exports = express.createServer();
 
-var settings = {};
+global.settings = {};
 if (app.settings.env === "production") {
 	settings.port = process.env.PORT;
 	settings.db_host = "staff.mongohq.com";
 	settings.db_port = 10070;
 	settings.db_app = "app3373805";
+	settings.wkhtmltopdf = "./bin/wkhtmltopdf";
 } else {
 	settings.port = 5000;
 	settings.db_host = "localhost";
 	settings.db_port = 27017;
 	settings.db_app = "test";
+	settings.wkhtmltopdf = "wkhtmltopdf";
 }
 
 app.configure(function() {
