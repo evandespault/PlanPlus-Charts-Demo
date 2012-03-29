@@ -10,7 +10,7 @@ DataProvider = function(host, port, app) {
 	console.log("app: " + app + ", host: " + host + ", port: " + port);
 	this.db = new Db(app, new Server(host, port, {auto_reconnect: true}, {}));
 	console.log("this.db: " + this.db);
-//	this.db.open(function(){});
+	this.db.open(function(){});
 //	this.db.authenticate("heroku", "75912ba0d1319f1a04622f9837a6604b", {});
 };
 
