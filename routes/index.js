@@ -4,6 +4,7 @@ var htmlContent;
 
 exports.index = function(req, res){
 	dataProvider.findOne( 0, function(error, data){
+		console.log("here's what data looks like: " + data);
 		res.render('index', { locals : {
 				title: 'Rendering amCharts in HTML and PDF',
 				datapoints:data
