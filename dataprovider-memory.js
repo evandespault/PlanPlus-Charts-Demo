@@ -21,6 +21,10 @@ DataProvider = function(host, port, app) {
 	Db.connect(dbUrl, function(error, client) {
 		if (error) throw error;
 
+		console.log("dbUrl: " + dbUrl);
+
+		//client.authenticate("evan", "evan", {});
+
 		client.collectionNames(function(error, names) {
 			if (error) throw error;
 
