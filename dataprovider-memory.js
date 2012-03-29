@@ -17,11 +17,10 @@ DataProvider = function(host, port, app) {
 	var dbUrl = process.env.MONGOHQ_URL || "mongodb://" + host + ":" + port + "/" + app;
 	var connectionUrl = url.parse(dbUrl);
 	var dbName = connectionUrl.pathname.replace(/^\//, '');
+	console.log("dbUrl: " + dbUrl);
 
 	Db.connect(dbUrl, function(error, client) {
 		if (error) throw error;
-
-		console.log("dbUrl: " + dbUrl);
 
 		//client.authenticate("evan", "evan", {});
 
