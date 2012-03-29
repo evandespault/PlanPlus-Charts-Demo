@@ -15,11 +15,11 @@ DataProvider = function(host, port, app) {
 };
 
 DataProvider.prototype.getCollection = function(callback) {
-//	this.db.collection('datapoints', function(error, datapoint_collection) {
+	this.db.collection('datapoints', function(error, datapoint_collection) {
 //		generateChartData(datapoint_collection);
 //		if(error) callback(error);
 //		else callback(null, datapoint_collection);
-//	});
+	});
 };
 
 DataProvider.prototype.findAll = function(callback) {

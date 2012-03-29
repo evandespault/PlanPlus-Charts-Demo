@@ -3,19 +3,13 @@ var reporter;
 var htmlContent;
 
 exports.index = function(req, res){
-//	dataProvider.findOne( 0, function(error, data){
-//	  res.render('index', { locals : {
-//			title: 'Rendering amCharts in HTML and PDF',
-//	 		datapoints:data
-//			}
-//		})
-//	})
-
-	res.render('index', { locals : {
-					title: 'jo',
-					datapoints:null
-				}
-			});
+	dataProvider.findOne( 0, function(error, data){
+		res.render('index', { locals : {
+				title: 'Rendering amCharts in HTML and PDF',
+				datapoints:data
+			}
+		});
+	});
 };
 
 exports.report = function(req, res){
