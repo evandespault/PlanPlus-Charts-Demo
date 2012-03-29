@@ -28,7 +28,7 @@ Reporter.prototype.generateReport = function(html) {
 		if(err) { throw err; }
 	});
 
-	var child = exec("wkhtmltopdf " + htmlFileName + " " + pdfFileName, function(err) {
+	var child = exec("./bin/wkhtmltopdf " + htmlFileName + " " + pdfFileName, function(err) {
 		if(err) { throw err; }
 	});
 }

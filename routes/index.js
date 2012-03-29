@@ -18,10 +18,5 @@ exports.report = function(req, res){
 		htmlContent = req.body.html;
 		reporter.generateReport(htmlContent);
 		res.sendfile('public/reports/test_report.pdf');
-	  //res.render('report', { locals : {
-		//	title: 'Rendering amCharts in PDF',
-	 	//	datapoints:data
-		//	}
-		//})
 	})
 };
