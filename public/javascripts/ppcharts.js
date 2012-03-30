@@ -65,7 +65,8 @@ AmCharts.ready(function () {
 // this method is called when chart is first inited as we listen for "dataUpdated" event
 function zoomChart() {
 	// different zoom methods can be used - zoomToIndexes, zoomToDates, zoomToCategoryValues
-	chart.zoomToIndexes(chartData.length - 40, chartData.length - 1);
+	//chart.zoomToIndexes(chartData.length - 40, chartData.length - 1);
+	chart.zoomToIndexes(1, chartData.length - 1);
 	chart.validateNow();
 }
 

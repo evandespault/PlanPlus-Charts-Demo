@@ -5,9 +5,10 @@ html#root(lang="en")
 		script(type="text/javascript", src="/javascripts/amcharts.js")
 		script(type="text/javascript")
 			var chartData = [];
-			var newDate;
+			var newDate, svgElement;
 			function submitForm() {
-				document.getElementById("html").value = document.getElementById("report").innerHTML;
+				svgElement = document.getElementById("chartdiv").firstChild.firstChild;
+				document.getElementById("html").value = new XMLSerializer().serializeToString(svgElement);
 				document.forms["reportForm"].submit();
 			}
 		each datapoint in datapoints
@@ -19,7 +20,7 @@ html#root(lang="en")
 		h2 Random data generated in the browser
 		div#report(style="border: 1px solid gray")
 			h3 Sample report based on random data
-			div#chartdiv(style="width: 100%; height: 400px;") 
+			div#chartdiv(style="width: 600px; height: 400px;") 
 		form#reportForm(method="post", action="/report", target="_new")
 			input(type="text", id="html", name="html", style="display:none")
 			input(type="button", value="Generate PDF report", onclick="submitForm()")
