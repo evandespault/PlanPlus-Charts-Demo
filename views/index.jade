@@ -14,13 +14,13 @@ html#root(lang="en")
 		each datapoint in datapoints
 			script(type="text/javascript")
 				chartData.push({date: new Date("#{datapoint.date}"), visits: #{datapoint.value}});
-		script(type="text/javascript", src="/javascripts/ppcharts.js")
+		script(type="text/javascript", src="/javascripts/ppcharts_basic.js")
 	body
 		h1= title
 		h2 Random data generated in the browser
 		div#report(style="border: 1px solid gray")
 			h3 Sample report based on random data
-			div#chartdiv(style="width: 600px; height: 400px;") 
+			div#chartdiv(style="width: 500px; height: 300px;") 
 		form#reportForm(method="post", action="/report", target="_new")
 			input(type="text", id="html", name="html", style="display:none")
 			input(type="button", value="Generate PDF report", onclick="submitForm()")

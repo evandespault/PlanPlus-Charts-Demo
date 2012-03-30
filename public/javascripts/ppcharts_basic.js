@@ -6,10 +6,10 @@ AmCharts.ready(function () {
 	// SERIAL CHART    
 	chart = new AmCharts.AmSerialChart();
 	chart.pathToImages = "../images/";
-	chart.zoomOutButton = {
-		backgroundColor: '#000000',
-		backgroundAlpha: 0.15
-	};
+	//chart.zoomOutButton = {
+	//	backgroundColor: '#000000',
+	//	backgroundAlpha: 0.15
+	//};
 	chart.dataProvider = chartData;
 	chart.categoryField = "date";
 
@@ -42,7 +42,6 @@ AmCharts.ready(function () {
 	graph.lineColor = "#b5030d";
 	graph.negativeLineColor = "#0352b5";
 	graph.hideBulletsCount = 50; // this makes the chart to hide bullets when there are more than 50 series in selection
-	graph.dashLength = "1";
 	chart.addGraph(graph);
 
 	// CURSOR

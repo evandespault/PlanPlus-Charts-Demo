@@ -23,7 +23,7 @@ Reporter.prototype.generateReport = function(svgElement) {
 			+ '<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
 			+ '<title>Rendering amCharts in HTML and PDF</title>'
 			+ '<link rel="stylesheet" href="http://localhost:5000/stylesheets/style.css" /></head><body>'
-			+ '<object data="' + svgFileName + '" type="image/svg+xml" width="598px" height="398px"></object>'
+			+ '<object data="' + svgFileName + '" type="image/svg+xml" width="700px" height="500px"></object>'
 			+ "</body></html>";
 
 	fs.writeFile(publicPath + htmlFileName, html, function(err) {

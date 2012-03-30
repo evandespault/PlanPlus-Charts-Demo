@@ -95,7 +95,7 @@ function generateChartData(collection) {
 	var firstDate = new Date();
 	firstDate.setDate(firstDate.getDate() - 500);
 
-	for (var i 	= 0; i < 200; i++) {
+	for (var i 	= 0; i < 40; i++) {
 		newDate = new Date(firstDate);
 		newDate.setDate(newDate.getDate() + i);
 
