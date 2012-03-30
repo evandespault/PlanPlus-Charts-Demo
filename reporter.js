@@ -8,7 +8,7 @@ Reporter = function(id) {
 	this.id = id;
 }
 
-Reporter.prototype.generateReport = function(svgElement) {
+Reporter.prototype.generateReport = function(svgElement, callback) {
 	svgFileName = 'test_report' + this.id + '.svg';
 	htmlFileName = 'test_report' + this.id + '.xhtml';
 	pdfFileName = 'test_report' + this.id + '.pdf';
@@ -34,6 +34,7 @@ Reporter.prototype.generateReport = function(svgElement) {
 									+ publicPath + htmlFileName + " "
 									+ publicPath + pdfFileName, function(err) {
 		if(err) { throw err; }
+		callback();
 	});
 }
 

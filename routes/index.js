@@ -18,7 +18,8 @@ exports.report = function (req, res) {
 	dataProvider.findOne ( reportId, function (error, data) {
 		htmlContent = req.body.html;
 		reporter = new Reporter (reportId);
-		reporter.generateReport (htmlContent);
-		res.sendfile ('public/reports/test_report' + reportId + '.pdf');
+		reporter.generateReport (htmlContent, function () {
+			res.sendfile ('public/reports/test_report' + reportId + '.pdf');
+		});
 	})
 };
