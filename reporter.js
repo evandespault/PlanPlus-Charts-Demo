@@ -22,7 +22,7 @@ Reporter.prototype.generateReport = function(svgElement, table, callback) {
 			+ '<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" lang="en">'
 			+ '<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
 			+ '<title>Rendering amCharts in HTML and PDF</title>'
-			+ '<link rel="stylesheet" href="stylesheets/pdfstyle.css" /></head>'
+			+ '<link rel="stylesheet" href="../stylesheets/pdfstyle.css" /></head>'
 			+ '<body><div id="report">'
 			+ '<h3>Projected Income</h3>'
 			+ '<div id="chartDiv">'
