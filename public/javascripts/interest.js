@@ -58,8 +58,8 @@ AmCharts.ready(function () {
 	graph.bulletBorderColor = "#FFFFFF";
 	graph.bulletBorderThickness = 2;
 	graph.lineThickness = 2;
-	graph.lineColor = "#EDBD3E";
-	graph.negativeLineColor = "#EDBD3E";
+	graph.lineColor = "#3B5323";
+	graph.negativeLineColor = "#3B5323";
 	graph.hideBulletsCount = 50; // this makes the chart to hide bullets when there are more than 50 series in selection
 	graph.dashLength = "1";
 	chart.addGraph(graph);
@@ -223,9 +223,11 @@ function isFloat(value) {
 }
 
 function submitForm() {
-	var svgElement;
-	svgElement = document.getElementById("report").firstChild.firstChild;
-	document.getElementById("html").value = svgElement;// new XMLSerializer().serializeToString(svgElement);
+	var svgElement, tableElement;
+	svgElement = document.getElementById("chartdiv").firstChild.firstChild;
+	tableElement = document.getElementById("datatable");
+	document.getElementById("svg").value = new XMLSerializer().serializeToString(svgElement);
+	document.getElementById("table").value = new XMLSerializer().serializeToString(tableElement);
 	document.forms["reportForm"].submit();
 }
 
@@ -245,6 +247,9 @@ function generateTable() {
 	td[1] = document.createElement('TD');
 	td[2] = document.createElement('TD');
 	td[3] = document.createElement('TD');
+	td[1].setAttribute("class", "inv_name_a");
+	td[2].setAttribute("class", "inv_name_b");
+	td[3].setAttribute("class", "inv_name_c");
 	td[0].appendChild(document.createTextNode(""));
 	td[1].appendChild(document.createTextNode("Investment A"));
 	td[2].appendChild(document.createTextNode("Investment B"));

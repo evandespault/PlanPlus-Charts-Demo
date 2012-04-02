@@ -1,7 +1,6 @@
 body {
   padding: 30px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-	background-color: #495E88;
 }
 
 a {
@@ -83,15 +82,12 @@ input {
 #report {
 	width: 600px;
 	background-color: #FFFFFF;
-	border: 1px solid #495E88;
 	margin-top: 10px;
 	padding-left: 10px;
 	padding-right: 10px;
 }
 
 #chartdiv {
-	width: 580px;
-	height: 400px;
 	margin: 10px;
 }
 

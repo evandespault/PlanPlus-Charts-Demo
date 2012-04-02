@@ -14,7 +14,7 @@ html#root(lang="en")
 					div(class="inv_p") Principal
 					div(class="inv_i") Interest
 				div(class="inv")
-					div(class="inv_name") Investment A
+					div(class="inv_name_a") Investment A
 					div(class="inv_p")
 						$
 						input(class="inv_p_input", type="text", id="p0", name="p0")
@@ -22,7 +22,7 @@ html#root(lang="en")
 						input(class="inv_i_input", type="text", id="i0", name="i0")
 						%
 				div(class="inv")
-					div(class="inv_name") Investment B
+					div(class="inv_name_b") Investment B
 					div(class="inv_p")
 						$
 						input(class="inv_p_input", type="text", id="p1", name="p1")
@@ -30,7 +30,7 @@ html#root(lang="en")
 						input(class="inv_i_input", type="text", id="i1", name="i1")
 						%
 				div(class="inv")
-					div(class="inv_name") Investment C
+					div(class="inv_name_c") Investment C
 					div(class="inv_p")
 						$
 						input(class="inv_p_input", type="text", id="p2", name="p2")
@@ -38,7 +38,8 @@ html#root(lang="en")
 						input(class="inv_i_input", type="text", id="i2", name="i2")
 						%
 		form#reportForm(method="post", action="/report", target="_new")
-			input(type="text", id="html", name="html", style="display:none")
+			input(type="text", id="svg", name="svg", style="display:none")
+			input(type="text", id="table", name="table", style="display:none")
 			input(type="button", value="Generate PDF report", onclick="submitForm()")
 			input(type="button", value="Generate Word report", onclick="submitForm()", disabled="disabled")
 		div#report

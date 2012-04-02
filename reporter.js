@@ -8,7 +8,7 @@ Reporter = function(id) {
 	this.id = id;
 }
 
-Reporter.prototype.generateReport = function(svgElement, callback) {
+Reporter.prototype.generateReport = function(svgElement, table, callback) {
 	svgFileName = 'test_report' + this.id + '.svg';
 	htmlFileName = 'test_report' + this.id + '.xhtml';
 	pdfFileName = 'test_report' + this.id + '.pdf';
@@ -22,9 +22,14 @@ Reporter.prototype.generateReport = function(svgElement, callback) {
 			+ '<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" lang="en">'
 			+ '<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
 			+ '<title>Rendering amCharts in HTML and PDF</title>'
-			+ '<link rel="stylesheet" href="http://localhost:5000/stylesheets/style.css" /></head><body>'
-			+ '<object data="' + svgFileName + '" type="image/svg+xml" width="700px" height="500px"></object>'
-			+ "</body></html>";
+			+ '<link rel="stylesheet" href="http://localhost:5000/stylesheets/pdfstyle.css" /></head>'
+			+ '<body><div id="report">'
+			+ '<h3>Projected Income</h3>'
+			+ '<div id="chartDiv">'
+			+ '<object data="' + svgFileName + '" type="image/svg+xml" width="580px" height="400px"></object>'
+			+ '</div>'
+			+ table
+			+ '</div></body></html>';
 
 	fs.writeFile(publicPath + htmlFileName, html, function(err) {
 		if(err) { throw err; }

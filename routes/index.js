@@ -16,9 +16,10 @@ exports.index = function (req, res) {
 
 exports.report = function (req, res) {
 	dataProvider.findOne ( reportId, function (error, data) {
-		htmlContent = req.body.html;
+		svgContent = req.body.svg;
+		tableContent = req.body.table;
 		reporter = new Reporter (reportId);
-		reporter.generateReport (htmlContent, function () {
+		reporter.generateReport (svgContent, tableContent, function () {
 			res.sendfile ('public/reports/test_report' + reportId + '.pdf');
 		});
 	})
