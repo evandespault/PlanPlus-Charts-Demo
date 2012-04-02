@@ -5,7 +5,7 @@ var chartData = [];
 
 // default data
 investments.push({p: 10000, i: 0.05});
-investments.push({p: 500, i: 0.04});
+investments.push({p: 5000, i: 0.09});
 investments.push({p: 12750, i: 0.06});
 
 AmCharts.ready(function () {
@@ -18,7 +18,6 @@ AmCharts.ready(function () {
 		document.getElementById('i' + i).value = investments[i].i;
 	}
 	recalculate();
-	generateTable();
 
 	// SERIAL CHART    
 	chart = new AmCharts.AmSerialChart();
@@ -141,14 +140,16 @@ function regenerateChartData() {
 
 function recalculate() {
 	var data = new Array();
-	var principal, interest, firstDate, newDate, datapoints;
+	var principal, interest, firstDate, newDate, datapoints, valid;
 	var value = new Array();
 
-	validateAllFields();
+	valid = validateAllFields();
+	if (valid == 0) return;
 
 	firstDate = new Date();
 	firstDate.setDate(firstDate.getDate() - 500);
 
+	chartData.length = 0;
 	for (var j = 0; j < 40; j++) {
 		newDate = new Date(firstDate);
 		newDate.setDate(newDate.getDate() + j);
@@ -168,10 +169,15 @@ function recalculate() {
 		});
 	}
 
+	if(chart) {
+		chart.validateData();
+	}
+	generateTable();
 }
 
 function validateAllFields() {
 	var field, value, valid;
+	var allValid = 1;
 	for (var i = 0; i < investments.length; i ++) {
 		// validate principal
 		field = document.getElementById('p' + i);
@@ -180,6 +186,7 @@ function validateAllFields() {
 		if(!valid) {
 			// revert
 			field.style.background = "#EDBD3E";
+			allValid = 0;
 		} else {
 			//save
 			field.value = parseFloat(value);
@@ -194,6 +201,7 @@ function validateAllFields() {
 		if(!valid) {
 			// revert
 			field.style.background = "#EDBD3E";
+			allValid = 0;
 		} else {
 			//save
 			field.value = parseFloat(value);
@@ -201,6 +209,8 @@ function validateAllFields() {
 			field.style.background = "#FFFFFF";
 		}
 	}
+
+	return allValid;
 }
 
 function isFloat(value) {
@@ -214,8 +224,8 @@ function isFloat(value) {
 
 function submitForm() {
 	var svgElement;
-	svgElement = document.getElementById("chartdiv").firstChild.firstChild;
-	document.getElementById("html").value = new XMLSerializer().serializeToString(svgElement);
+	svgElement = document.getElementById("report").firstChild.firstChild;
+	document.getElementById("html").value = svgElement;// new XMLSerializer().serializeToString(svgElement);
 	document.forms["reportForm"].submit();
 }
 
@@ -225,6 +235,10 @@ function generateTable() {
 	var tr = new Array();
 	var td = new Array();
  	table = document.getElementById("datatable");
+
+	while(table.hasChildNodes()) {
+		table.removeChild(table.firstChild);
+	}
 
 	tr[0] = document.createElement('TR');
 	td[0] = document.createElement('TD');
