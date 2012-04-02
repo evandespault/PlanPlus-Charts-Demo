@@ -2043,7 +2043,7 @@ AmCharts.AmRectangularChart = AmCharts.Class({
         this.marginRight = this.marginBottom = this.marginTop = this.marginLeft = 20;
         this.verticalPosition = this.horizontalPosition = this.depth3D = this.angle = 0;
         this.heightMultiplyer = this.widthMultiplyer = 1;
-        this.zoomOutText = "Show all";
+//        this.zoomOutText = "Show all";
         this.zbSet;
         this.zoomOutButton = {
             backgroundColor: "#b2e1ff",

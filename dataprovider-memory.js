@@ -21,7 +21,7 @@ DataProvider = function(host, port, app) {
 
 DataProvider.prototype.getCollection = function(callback) {
 	this.db.collection('datapoints', function(error, datapoint_collection) {
-		generateChartData(datapoint_collection);
+		//generateChartData(datapoint_collection);
 		if(error) callback(error);
 		else callback(null, datapoint_collection);
 	});
@@ -89,6 +89,7 @@ DataProvider.prototype.save = function(datapoints, callback) {
 };
 
 // Generate random data
+/*
 function generateChartData(collection) {
 	var data = new Array();
 	var chartdata, datapoint, newDate, value;
@@ -117,5 +118,5 @@ function generateChartData(collection) {
 	collection.insert(chartdata, function() {
 	});
 }
-
+*/
 exports.DataProvider = DataProvider;

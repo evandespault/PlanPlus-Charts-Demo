@@ -1,8 +1,99 @@
 body {
-  padding: 50px;
+  padding: 30px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	background-color: #495E88;
 }
 
 a {
   color: #00B7FF;
+}
+
+input {
+	border: 1px solid #ccc;
+	font-size:14px;
+	min-height: 20px;
+	margin-right: 5px;
+	outline: none;
+	text-align: right;
+}
+
+#calcForm {
+	width: 600px;
+	padding: 5px;
+	margin-bottom: 10px;
+	background-color: #A0AEC1;
+}
+
+.inv_table {
+	display: table;
+}
+
+.inv {
+	display: table-row;
+}
+
+.inv_header {
+	display: table-row;
+	font-weight: bold;
+}
+
+.inv_name {
+	display: table-cell;
+	width: 125px;
+	font-weight:bold;
+	color: #495E88;
+}
+
+.inv_p {
+	display: table-cell;
+	padding-left: 10px;
+	padding-right: 10px;
+	text-align: left;
+}
+
+.inv_i {
+	display: table-cell;
+	padding-left: 10px;
+	padding-right: 10px;
+	text-align: left;
+}
+
+.inv_p_input {
+	width: 100px;
+}
+
+.inv_i_input {
+	width: 50px;
+}
+
+#report {
+	width: 600px;
+	background-color: #FFFFFF;
+	border: 1px solid #495E88;
+	margin-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#chartdiv {
+	width: 580px;
+	height: 400px;
+	margin: 10px;
+}
+
+#datatable {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#datatable td {
+	margin: 0px;
+	text-align: right;
+}
+
+.header {
+	font-weight: bold;
+}
+.odd_row {
+	background-color: #D3DFF4;
 }

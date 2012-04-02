@@ -3,24 +3,45 @@ html#root(lang="en")
 	head
 		title= title
 		script(type="text/javascript", src="/javascripts/amcharts.js")
-		script(type="text/javascript")
-			var chartData = [];
-			var newDate, svgElement;
-			function submitForm() {
-				svgElement = document.getElementById("chartdiv").firstChild.firstChild;
-				document.getElementById("html").value = new XMLSerializer().serializeToString(svgElement);
-				document.forms["reportForm"].submit();
-			}
-		each datapoint in datapoints
-			script(type="text/javascript")
-				chartData.push({date: new Date("#{datapoint.date}"), visits: #{datapoint.value}});
-		script(type="text/javascript", src="/javascripts/ppcharts_basic.js")
+		script(type="text/javascript", src="/javascripts/interest.js")
 	body
 		h1= title
-		h2 Random data generated in the browser
-		div#report(style="border: 1px solid gray")
-			h3 Sample report based on random data
-			div#chartdiv(style="width: 500px; height: 300px;") 
+		h2 Investment Income Calculator
+		form#inputForm(id="calcForm", method="get", action="")
+			div(class="inv_table")
+				div(class="inv_header")
+					div(class="inv_name")
+					div(class="inv_p") Principal
+					div(class="inv_i") Interest
+				div(class="inv")
+					div(class="inv_name") Investment A
+					div(class="inv_p")
+						$
+						input(class="inv_p_input", type="text", id="p0", name="p0")
+					div(class="inv_i")
+						input(class="inv_i_input", type="text", id="i0", name="i0")
+						%
+				div(class="inv")
+					div(class="inv_name") Investment B
+					div(class="inv_p")
+						$
+						input(class="inv_p_input", type="text", id="p1", name="p1")
+					div(class="inv_i")
+						input(class="inv_i_input", type="text", id="i1", name="i1")
+						%
+				div(class="inv")
+					div(class="inv_name") Investment C
+					div(class="inv_p")
+						$
+						input(class="inv_p_input", type="text", id="p2", name="p2")
+					div(class="inv_i")
+						input(class="inv_i_input", type="text", id="i2", name="i2")
+						%
 		form#reportForm(method="post", action="/report", target="_new")
 			input(type="text", id="html", name="html", style="display:none")
 			input(type="button", value="Generate PDF report", onclick="submitForm()")
+			input(type="button", value="Generate Word report", onclick="submitForm()", disabled="disabled")
+		div#report
+			h3 Projected Income
+			div#chartdiv
+			table#datatable
