@@ -150,7 +150,7 @@ function recalculate() {
 	firstDate.setDate(firstDate.getDate() - 500);
 
 	chartData.length = 0;
-	for (var j = 0; j < 40; j++) {
+	for (var j = 0; j < 20; j++) {
 		newDate = new Date(firstDate);
 		newDate.setDate(newDate.getDate() + j);
 

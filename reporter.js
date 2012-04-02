@@ -26,7 +26,7 @@ Reporter.prototype.generateReport = function(svgElement, table, callback) {
 			+ '<body><div id="report">'
 			+ '<h3>Projected Income</h3>'
 			+ '<div id="chartDiv">'
-			+ '<object data="' + svgFileName + '" type="image/svg+xml" width="580px" height="400px"></object>'
+			+ '<object data="' + svgFileName + '" type="image/svg+xml" width="620px" height="420px"></object>'
 			+ '</div>'
 			+ table
 			+ '</div></body></html>';

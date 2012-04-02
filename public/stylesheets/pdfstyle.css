@@ -1,5 +1,4 @@
 body {
-  padding: 30px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -89,6 +88,7 @@ input {
 
 #chartdiv {
 	margin: 10px;
+	border: 1px solid red;
 }
 
 #datatable {
