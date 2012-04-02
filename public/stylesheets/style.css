@@ -100,7 +100,8 @@ input {
 }
 
 #datatable {
-	width: 100%;
+	width: 90%;
+	margin: 20px;
 	border-collapse: collapse;
 }
 
