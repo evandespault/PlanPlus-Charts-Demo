@@ -19,10 +19,7 @@ exports.report = function (req, res) {
 		svgContent = req.body.svg;
 		tableContent = req.body.table;
 		reporter = new Reporter (reportId);
-			console.log("woooooooooooooooooo");
 		reporter.generateReport (svgContent, tableContent, function () {
-			console.log("woooooooooooooooooo");
-			var startTime = new Date().getTime();
 			res.download ('public/reports/test_report' + reportId + '.pdf', function(err) {
 				if (err) next(err);
 			});
