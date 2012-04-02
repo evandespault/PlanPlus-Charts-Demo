@@ -17,6 +17,10 @@ input {
 	text-align: right;
 }
 
+.title {
+	color: #000000;
+}
+
 #calcForm {
 	width: 600px;
 	padding: 5px;

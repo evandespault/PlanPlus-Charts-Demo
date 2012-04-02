@@ -7,7 +7,7 @@ exports.index = function (req, res) {
 	dataProvider.findOne (0, function (error, data) {
 		res.render ('index', {
 			locals : {
-				title: 'Rendering amCharts in HTML and PDF',
+				title: 'Demo: Rendering Javascript charts in PDF',
 				datapoints:data
 			}
 		});

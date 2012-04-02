@@ -5,9 +5,9 @@ html#root(lang="en")
 		script(type="text/javascript", src="/javascripts/amcharts.js")
 		script(type="text/javascript", src="/javascripts/interest.js")
 	body
-		h1= title
-		h2 Investment Income Calculator
+		h1(class="title")= title
 		form#inputForm(id="calcForm", method="get", action="")
+			h2(class="title") Investment Income Calculator
 			div(class="inv_table")
 				div(class="inv_header")
 					div(class="inv_name")
