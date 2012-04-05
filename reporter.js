@@ -53,12 +53,12 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 	} else if(format == "docx") {
 
 		// Convert svg to png
-		im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + pngFileName], function(err) {
+		im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + 'template/word/media/image1.png'], function(err) {
 			if (err) throw err;
 
 			// Insert png into docx template directory
-			child = exec('mv ' + publicPath + pngFileName + " " + publicPath + "template/word/media/image1.png", function(err) {
-				if (err) throw err;
+//			child = exec('mv ' + publicPath + pngFileName + " " + publicPath + "template/word/media/image1.png", function(err) {
+	//			if (err) throw err;
 				
 				// Zip the document direcotry as docx
 				child = exec('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..', function(err) {
@@ -71,7 +71,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 						callback();
 					});
 				});
-			});
+			//});
 		});
 	}
 }
