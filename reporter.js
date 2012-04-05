@@ -47,7 +47,13 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 										+ publicPath + htmlFileName + " "
 										+ publicPath + reportFileName, function(err) {
 			if(err) { throw err; }
-			callback();
+			// Delete the temporary files
+			child = exec('rm ' + publicPath + 'template/word/media/image1.png; '
+							+ 'rm ' + publicPath + htmlFileName + '; '
+							+ 'rm ' + publicPath + svgFileName, function(err) {
+			if(err) throw err;
+				callback();
+			});
 		});
 
 	} else if(format == "docx") {
@@ -65,8 +71,10 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 					console.log('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..');
 					if (err) throw err;
 
-					// Delete the temporary png
-					child = exec('rm ' + publicPath + 'template/word/media/image1.png', function(err) {
+					// Delete the temporary files
+					child = exec('rm ' + publicPath + 'template/word/media/image1.png; '
+									+ 'rm ' + publicPath + htmlFileName + '; '
+									+ 'rm ' + publicPath + svgFileName, function(err) {
 					if(err) throw err;
 						callback();
 					});

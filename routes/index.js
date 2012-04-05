@@ -1,4 +1,5 @@
 var Reporter = require ('../reporter').Reporter;
+var exec = require('child_process').exec;
 var reporter;
 var htmlContent;
 var reportId = 0;
@@ -23,6 +24,9 @@ exports.report = function (req, res) {
 		reporter.generateReport (svgContent, tableContent, format, function () {
 			res.download ('public/reports/test_report' + reportId + '.' + format, function(err) {
 				if (err) console.log(err);
+				var child = exec('rm public/reports/test_report' + reportId + '.' + format, function(err) {
+						if (err) console.log(err);
+				});
 			});
 		});
 	})
