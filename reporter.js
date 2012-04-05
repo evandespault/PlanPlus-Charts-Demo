@@ -64,7 +64,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 
 				// Convert svg to png
 				//im.convert(['-size', '600x400', publicPath + svgFileName, 'template/word/media/image1.png'], function(err) {
-				child = exec('bin/utilities/convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.png', function(err) {
+				child = exec('convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.png', function(err) {
 					if (err) { console.log(err); throw err; }
 					console.log("converted svg to png");
 
