@@ -81,7 +81,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 		//		gm(publicPath + svgFileName).size(function (err, size) {
 												//write('template/word/media/image1.png', function (err) {
 					if (err) { console.log(err); throw err;}
-					console.log("converted svg to bmp");
+					console.log("converted svg to bmp " + fs.lstatSync('template/word/media/image1.bmp').isFile());
 
 					// Zip the document direcotry as docx
 //					child = exec('cd ' + publicPath + 'template', function(err) {
@@ -89,11 +89,14 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 //						console.log("cd " + publicPath + "template");
 					var child3 = exec('mv template/word/media/image1.bmp template/word/media/image1.png', function(err) {
 						if (err) { console.log (err); throw err; }
-						console.log("saved bmp as png");
+						console.log("saved bmp as png " + fs.lstatSync('template/word/media/image1.png').isFile());
 
-						var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
+						//var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
+					console.log("template/word/media/image1.png " + fs.lstatSync('template/word/media/image1.png').isFile());
+						console.log("cd template; zip -r ../" + reportFileName + " *; cd ..");
+						var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' *; cd ..', function(err) {
 							if (err) { console.log(err); throw err; }
-							console.log("cd template; zip -r ../" + publicPath + reportFileName + " " + "*; cd ..");
+							var child45 = exec('cd ..');
 					
 //							child = exec('cd ../../..', function(err) {
 //								if (err) { console.log(err); throw err; }
@@ -106,8 +109,8 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 									console.log("temp files deleted");
 									callback();
 								});
-							});
-							//});
+//							});
+						});
 					});
 				});
 			}
