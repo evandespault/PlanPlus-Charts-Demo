@@ -68,7 +68,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 				// Convert svg to png
 				//im.convert(['-size', '60x40', publicPath + svgFileName, 'template/word/media/image1.png'], function(err) {
 				//convert = spawn('convert', ['-size', '600x400', publicPath + svgFileName, 'template/word/media/image1.png'], function (err) {
-				 var child9 = exec('convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.png', function (err) {
+				 var child9 = exec('convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.bmp', function (err) {
 //				convert.stdin.write(publicPath + svgFileName);
 //				convert.stdin.end();
 //				var writeStream = fs.createWriteStream('template/word/media/image1.png');
@@ -94,7 +94,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 
 						//var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
 						console.log("trying " +  '(cd template && zip -r ../' + publicPath + reportFileName + ' * && cd ..)');
-						var child4 = exec('(zip -r ../' + publicPath + reportFileName + ' *)', function(err) {
+						var child4 = exec('(cd template && zip -r ../' + publicPath + reportFileName + ' *)', function(err) {
 							if (err) { console.log(err); throw err; }
 							console.log("zip -r " + publicPath + reportFileName + " * " + fs.lstatSync(publicPath + reportFileName).isFile());
 					
