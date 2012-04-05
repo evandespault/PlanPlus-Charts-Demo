@@ -93,10 +93,9 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 
 						//var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
 					console.log("template/word/media/image1.png " + fs.lstatSync('template/word/media/image1.png').isFile());
-						console.log("cd template; zip -r ../" + publicPath + reportFileName + " *; cd ..");
 						var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' *; cd ..', function(err) {
 							if (err) { console.log(err); throw err; }
-							var child45 = exec('cd ..');
+							console.log("zipped " + fs.lstatSync(publicPath + reportFileName).isFile());
 					
 //							child = exec('cd ../../..', function(err) {
 //								if (err) { console.log(err); throw err; }
