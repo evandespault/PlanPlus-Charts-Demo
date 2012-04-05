@@ -53,7 +53,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 	} else if(format == "docx") {
 
 		// Convert svg to png
-		im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + pngFileName], function(err, metadata) {
+		im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + pngFileName], function(err) {
 			if (err) throw err;
 
 			// Insert png into docx template directory
