@@ -73,11 +73,11 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 						console.log("docx zipped");
 
 						// Delete the temporary files
-						child = exec('rm ' + publicPath + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
-							if (err) console.log(err);
-							console.log("temp files deleted");
+						//child = exec('rm ' + publicPath + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
+						//	if (err) console.log(err);
+						//	console.log("temp files deleted");
 							callback();
-						});
+						//});
 					});
 				});
 			}
