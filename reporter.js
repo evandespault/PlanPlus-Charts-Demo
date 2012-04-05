@@ -60,7 +60,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 
 		// Convert svg to png
 		im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + 'template/word/media/image1.png'], function(err) {
-			if (err) throw err;
+			if (err) console.log(err);
 
 			// Insert png into docx template directory
 //			child = exec('mv ' + publicPath + pngFileName + " " + publicPath + "template/word/media/image1.png", function(err) {
