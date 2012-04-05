@@ -83,7 +83,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 		//		gm(publicPath + svgFileName).size(function (err, size) {
 												//write('template/word/media/image1.png', function (err) {
 					if (err) { console.log(err); throw err;}
-					console.log("converted svg to bmp " + fs.lstatSync('template/word/media/image1.bmp').isFile());
+					console.log("converted svg to bmp " + fs.lstatSync(publicPath + 'image1.bmp').isFile());
 
 					// Zip the document direcotry as docx
 //					child = exec('cd ' + publicPath + 'template', function(err) {
