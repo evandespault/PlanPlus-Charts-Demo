@@ -54,7 +54,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 					console.log('pdf created');
 
 					// Delete the temporary files
-					child = exec('rm ' + publicPath + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; ' + 'rm ' + publicPath + svgFileName, function(err) {
+					child = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; ' + 'rm ' + publicPath + svgFileName, function(err) {
 						if(err) throw err;
 						callback();
 					});
@@ -63,22 +63,32 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 			} else if(format == "docx") {
 
 				// Convert svg to png
-				im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + 'template/word/media/image1.png'], function(err) {
-					if (err) throw err;
+				im.convert(['-size', '600x400', publicPath + svgFileName, 'template/word/media/image1.png'], function(err) {
+					if (err) { console.log(err); throw err; }
 					console.log("converted svg to png");
 
 					// Zip the document direcotry as docx
-					child = exec('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..', function(err) {
-						if (err) throw err;
-						console.log("docx zipped");
+//					child = exec('cd ' + publicPath + 'template', function(err) {
+//						if (err) { console.log(err); throw err; }
+//						console.log("cd " + publicPath + "template");
+					
+						child = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
+							if (err) { console.log(err); throw err; }
+							console.log("cd template; zip -r ../" + publicPath + reportFileName + " " + "*; cd ..");
+					
+//							child = exec('cd ../../..', function(err) {
+//								if (err) { console.log(err); throw err; }
+//								console.log("cd ../../..");
 
-						// Delete the temporary files
-						//child = exec('rm ' + publicPath + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
-						//	if (err) console.log(err);
-						//	console.log("temp files deleted");
-							callback();
-						//});
-					});
+								// Delete the temporary files
+								child = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
+									if (err) { console.log(err); throw err; };
+									console.log("temp files deleted");
+									callback();
+								});
+							//});
+						});
+					//});
 				});
 			}
 		});
