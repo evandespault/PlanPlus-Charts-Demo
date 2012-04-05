@@ -89,6 +89,8 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 //						console.log("cd " + publicPath + "template");
 					child = exec('mv template/word/media/image1.bmp template/word/media/image1.png', function(err) {
 						if (err) { console.log (err); throw err; }
+						console.log("saved bmp as png");
+
 						child = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
 							if (err) { console.log(err); throw err; }
 							console.log("cd template; zip -r ../" + publicPath + reportFileName + " " + "*; cd ..");
