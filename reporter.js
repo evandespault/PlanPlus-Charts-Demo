@@ -68,7 +68,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 				// Convert svg to png
 				//im.convert(['-size', '60x40', publicPath + svgFileName, 'template/word/media/image1.png'], function(err) {
 				//convert = spawn('convert', ['-size', '600x400', publicPath + svgFileName, 'template/word/media/image1.png'], function (err) {
-				easyimg.exec('convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.bmp', function (err) {
+				easyimg.exec('convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.png', function (err) {
 //				convert.stdin.write(publicPath + svgFileName);
 //				convert.stdin.end();
 //				var writeStream = fs.createWriteStream('template/word/media/image1.png');
