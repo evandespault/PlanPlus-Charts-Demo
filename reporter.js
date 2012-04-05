@@ -1,6 +1,6 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
-var im = require('imagemagick');
+var im = require('./imagemagick');
 var id;
 var svgFileName, htmlFileName, pdfFileName;
 var publicPath = 'public/reports/';
