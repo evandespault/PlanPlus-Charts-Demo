@@ -1,8 +1,10 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 var gm = require('gm');
 //var im = gm.subClass({ imageMagick: true});
 var im = require('imagemagick');
+var easyimg = require('easyimage');
 var id;
 var svgFileName, htmlFileName, pdfFileName;
 var publicPath = 'public/reports/';
@@ -63,7 +65,18 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 			} else if(format == "docx") {
 
 				// Convert svg to png
-				im.convert(['-size', '60x40', publicPath + svgFileName, 'template/word/media/image1.png'], function(err) {
+				//im.convert(['-size', '60x40', publicPath + svgFileName, 'template/word/media/image1.png'], function(err) {
+				//convert = spawn('convert', ['-size', '600x400', publicPath + svgFileName, 'template/word/media/image1.png'], function (err) {
+				easyimg.exec('convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.png', function (err) {
+//				convert.stdin.write(publicPath + svgFileName);
+//				convert.stdin.end();
+//				var writeStream = fs.createWriteStream('template/word/media/image1.png');
+//				convert.stdout.on('data', function(data) {
+//					writeStream.write(data);
+//				});
+//				convert.on('exit', function(code) {
+//					writeStream.end();
+				//});
 				//child = exec('convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.bmp', function(err) {
 		//		gm(publicPath + svgFileName).size(function (err, size) {
 												//write('template/word/media/image1.png', function (err) {
@@ -84,7 +97,8 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 //								console.log("cd ../../..");
 
 								// Delete the temporary files
-								child = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
+								//child = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
+								child = exec('rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
 									if (err) { console.log(err); throw err; };
 									console.log("temp files deleted");
 									callback();
