@@ -58,6 +58,8 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 
 	} else if(format == "docx") {
 
+		console.log("let's get started");
+
 		// Convert svg to png
 		im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + 'template/word/media/image1.png'], function(err) {
 			console.log("converted svg to png");
