@@ -20,73 +20,69 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 	docFileName = 'test_report' + this.id + '.docx';
 	reportFileName = 'test_report' + this.id + '.' + format;
 
+	console.log("let's get started");
+
+	// Create svg file
 	fs.writeFile(publicPath + svgFileName, svgElement, function(err) {
-		if(err) { throw err; }
-	});
+		if (err) throw err;
+		console.log('svg file created');
 
-	var html =
-				'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
-			+ '<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" lang="en">'
-			+ '<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
-			+ '<title>Rendering amCharts in HTML and PDF</title>'
-			+ '<link rel="stylesheet" href="../stylesheets/pdfstyle.css" /></head>'
-			+ '<body><div id="report">'
-			+ '<h3>Projected Income</h3>'
-			+ '<div id="chartDiv">'
-			+ '<object data="' + svgFileName + '" type="image/svg+xml" width="620px" height="420px"></object>'
-			+ '</div>'
-			+ table
-			+ '</div></body></html>';
+		// Create xhtml file
+		var html =
+					'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
+				+ '<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" lang="en">'
+				+ '<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
+				+ '<title>Rendering amCharts in HTML and PDF</title>'
+				+ '<link rel="stylesheet" href="../stylesheets/pdfstyle.css" /></head>'
+				+ '<body><div id="report">'
+				+ '<h3>Projected Income</h3>'
+				+ '<div id="chartDiv">'
+				+ '<object data="' + svgFileName + '" type="image/svg+xml" width="620px" height="420px"></object>'
+				+ '</div>'
+				+ table
+				+ '</div></body></html>';
 
-	fs.writeFile(publicPath + htmlFileName, html, function(err) {
-		if(err) { throw err; }
-	});
+		fs.writeFile(publicPath + htmlFileName, html, function(err) {
+			if (err) throw err;
+			console.log('xhtml created');
 
-	if(format == "pdf") {
-		child = exec(settings.wkhtmltopdf + " "
-										+ publicPath + htmlFileName + " "
-										+ publicPath + reportFileName, function(err) {
-			if(err) { throw err; }
-			// Delete the temporary files
-			child = exec('rm ' + publicPath + 'template/word/media/image1.png; '
-							+ 'rm ' + publicPath + htmlFileName + '; '
-							+ 'rm ' + publicPath + svgFileName, function(err) {
-			if(err) throw err;
-				callback();
-			});
-		});
+			if(format == "pdf") {
 
-	} else if(format == "docx") {
-
-		console.log("let's get started");
-
-		// Convert svg to png
-		im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + 'template/word/media/image1.png'], function(err) {
-			console.log("converted svg to png");
-			if (err) console.log(err);
-
-			// Insert png into docx template directory
-//			child = exec('mv ' + publicPath + pngFileName + " " + publicPath + "template/word/media/image1.png", function(err) {
-	//			if (err) throw err;
-				
-				// Zip the document direcotry as docx
-				child = exec('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..', function(err) {
-					console.log("converted svg to png");
-					console.log('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..');
-					if (err) console.log(err);
+				// Create pdf
+				child = exec(settings.wkhtmltopdf + " " + publicPath + htmlFileName + " "	+ publicPath + reportFileName, function(err) {
+					if (err) throw err;
+					console.log('pdf created');
 
 					// Delete the temporary files
-					child = exec('rm ' + publicPath + 'template/word/media/image1.png; '
-									+ 'rm ' + publicPath + htmlFileName + '; '
-									+ 'rm ' + publicPath + svgFileName, function(err) {
-						console.log("temp files deleted");
-					if(err) console.log(err);
+					child = exec('rm ' + publicPath + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; ' + 'rm ' + publicPath + svgFileName, function(err) {
+						if(err) throw err;
 						callback();
 					});
 				});
-			//});
+
+			} else if(format == "docx") {
+
+				// Convert svg to png
+				im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + 'template/word/media/image1.png'], function(err) {
+					if (err) throw err;
+					console.log("converted svg to png");
+
+					// Zip the document direcotry as docx
+					child = exec('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..', function(err) {
+						if (err) throw err;
+						console.log("docx zipped");
+
+						// Delete the temporary files
+						child = exec('rm ' + publicPath + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
+							if (err) console.log(err);
+							console.log("temp files deleted");
+							callback();
+						});
+					});
+				});
+			}
 		});
-	}
+	});
 }
 
 exports.Reporter = Reporter;
