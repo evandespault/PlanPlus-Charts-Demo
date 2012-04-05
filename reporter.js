@@ -60,6 +60,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 
 		// Convert svg to png
 		im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + 'template/word/media/image1.png'], function(err) {
+			console.log("converted svg to png");
 			if (err) console.log(err);
 
 			// Insert png into docx template directory
@@ -68,6 +69,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 				
 				// Zip the document direcotry as docx
 				child = exec('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..', function(err) {
+					console.log("converted svg to png");
 					console.log('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..');
 					if (err) console.log(err);
 
@@ -75,6 +77,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 					child = exec('rm ' + publicPath + 'template/word/media/image1.png; '
 									+ 'rm ' + publicPath + htmlFileName + '; '
 									+ 'rm ' + publicPath + svgFileName, function(err) {
+						console.log("temp files deleted");
 					if(err) console.log(err);
 						callback();
 					});
