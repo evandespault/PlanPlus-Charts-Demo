@@ -95,23 +95,44 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 						console.log("saved bmp as png " + fs.lstatSync(publicPath + 'image1.png').isFile());
 
 						//var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
-						console.log("trying " +  '(zip -r ../' + publicPath + reportFileName + ' * && cd ..)');
-						var child4 = exec('(zip -r ../' + publicPath + reportFileName + ' *)', function(err) {
+//						console.log("trying " +  '(zip -r ../' + publicPath + reportFileName + ' * && cd ..)');
+	//					var child4 = exec('(zip -r ../' + publicPath + reportFileName + ' *)', function(err) {
+							var archive = new zip();
+							archive.addFiles([
+								{ name: "[Content_Types].xml", path: "template/[Content_Types].xml" },
+								{ name: "_rels/.rels", path: "template/_rels/.rels" },
+								{ name: "docProps/app.xml", path: "template/docProps/app.xml" },
+								{ name: "docProps/core.xml", path: "template/docProps/core.xml" },
+								{ name: "word/document.xml", path: "template/word/document.xml" },
+								{ name: "word/fontTable.xml", path: "template/word/fontTable.xml" },
+								{ name: "word/settings.xml", path: "template/word/settings.xml" },
+								{ name: "word/styles.xml", path: "template/word/styles.xml" },
+								{ name: "word/stylesWithEffects.xml", path: "template/word/stylesWithEffects.xml" },
+								{ name: "word/webSettings.xml", path: "template/word/webSettings.xml" },
+								{ name: "word/_rels/document.xml.rels", path: "template/word/_rels/document.xml.rels" },
+								{ name: "word/media/image1.png", path: "public/reports/image1.png" },
+								{ name: "word/theme/theme1.xml", path: "template/word/theme/theme1.xml" }
+							], function (err) {
+
 							if (err) { console.log(err); throw err; }
-							console.log("zip -r " + publicPath + reportFileName + " * " + fs.lstatSync(publicPath + reportFileName).isFile());
+							//console.log("zip -r " + publicPath + reportFileName + " * " + fs.lstatSync(publicPath + reportFileName).isFile());
+							var buff = archive.toBuffer();
+							fs.writeFile(publicPath + reportFileName, buff, function (err) {
+								if (err) { console.log (err); throw err; }
+								console.log ("zipped " + fs.lstatSync(publicPath + reportFileName).isFile());
 					
 //							child = exec('cd ../../..', function(err) {
 //								if (err) { console.log(err); throw err; }
 //								console.log("cd ../../..");
 
 								// Delete the temporary files
-								var child5 = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
+								var child5 = exec('rm ' + publicPath + 'image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
 								//child = exec('rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
 									if (err) { console.log(err); throw err; };
 									console.log("temp files deleted");
 									callback();
 								});
-//							});
+							});
 						});
 					});
 				});
