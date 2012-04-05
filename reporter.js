@@ -87,7 +87,8 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 //					child = exec('cd ' + publicPath + 'template', function(err) {
 //						if (err) { console.log(err); throw err; }
 //						console.log("cd " + publicPath + "template");
-//					child = exec('mv /template/word/media/image1.bmp /template/word/media/image1/png');
+					child = exec('mv template/word/media/image1.bmp template/word/media/image1.png', function(err) {
+						if (err) { console.log (err); throw err; }
 						child = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
 							if (err) { console.log(err); throw err; }
 							console.log("cd template; zip -r ../" + publicPath + reportFileName + " " + "*; cd ..");
@@ -97,15 +98,15 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 //								console.log("cd ../../..");
 
 								// Delete the temporary files
-								//child = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
-								child = exec('rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
+								child = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
+								//child = exec('rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
 									if (err) { console.log(err); throw err; };
 									console.log("temp files deleted");
 									callback();
 								});
 							});
 							//});
-					//});
+					});
 				});
 			}
 		});
