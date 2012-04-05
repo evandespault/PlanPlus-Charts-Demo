@@ -1,7 +1,8 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
-var gm = require('gm');
-var im = gm.subClass({ imageMagick: true});
+//var gm = require('gm');
+//var im = gm.subClass({ imageMagick: true});
+var im = require('imagemagick');
 var id;
 var svgFileName, htmlFileName, pdfFileName;
 var publicPath = 'public/reports/';
