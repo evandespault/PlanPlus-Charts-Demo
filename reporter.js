@@ -51,12 +51,12 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 			if(format == "pdf") {
 
 				// Create pdf
-				child = exec(settings.wkhtmltopdf + " " + publicPath + htmlFileName + " "	+ publicPath + reportFileName, function(err) {
+				var child1 = exec(settings.wkhtmltopdf + " " + publicPath + htmlFileName + " "	+ publicPath + reportFileName, function(err) {
 					if (err) throw err;
 					console.log('pdf created');
 
 					// Delete the temporary files
-					child = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; ' + 'rm ' + publicPath + svgFileName, function(err) {
+					var child2 = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; ' + 'rm ' + publicPath + svgFileName, function(err) {
 						if(err) throw err;
 						callback();
 					});
@@ -87,11 +87,11 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 //					child = exec('cd ' + publicPath + 'template', function(err) {
 //						if (err) { console.log(err); throw err; }
 //						console.log("cd " + publicPath + "template");
-					child = exec('mv template/word/media/image1.bmp template/word/media/image1.png', function(err) {
+					var child3 = exec('mv template/word/media/image1.bmp template/word/media/image1.png', function(err) {
 						if (err) { console.log (err); throw err; }
 						console.log("saved bmp as png");
 
-						child = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
+						var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
 							if (err) { console.log(err); throw err; }
 							console.log("cd template; zip -r ../" + publicPath + reportFileName + " " + "*; cd ..");
 					
@@ -100,7 +100,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 //								console.log("cd ../../..");
 
 								// Delete the temporary files
-								child = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
+								var child5 = exec('rm ' + 'template/word/media/image1.png; ' + 'rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
 								//child = exec('rm ' + publicPath + htmlFileName + '; '	+ 'rm ' + publicPath + svgFileName, function(err) {
 									if (err) { console.log(err); throw err; };
 									console.log("temp files deleted");
