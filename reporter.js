@@ -63,7 +63,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 			} else if(format == "docx") {
 
 				// Convert svg to png
-				im.convert(['-size', '600x400', publicPath + svgFileName, 'template/word/media/image1.png'], function(err) {
+				im.convert(['-size', '60x40', publicPath + svgFileName, 'template/word/media/image1.png'], function(err) {
 				//child = exec('convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.bmp', function(err) {
 		//		gm(publicPath + svgFileName).size(function (err, size) {
 												//write('template/word/media/image1.png', function (err) {
