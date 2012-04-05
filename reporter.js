@@ -89,9 +89,9 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 //					child = exec('cd ' + publicPath + 'template', function(err) {
 //						if (err) { console.log(err); throw err; }
 //						console.log("cd " + publicPath + "template");
-					var child3 = exec('mv template/word/media/image1.bmp template/word/media/image1.png', function(err) {
+					var child3 = exec('mv ' + publicPath + 'image1.bmp ' + publicPath + 'image1.png', function(err) {
 						if (err) { console.log (err); throw err; }
-						console.log("saved bmp as png " + fs.lstatSync('template/word/media/image1.png').isFile());
+						console.log("saved bmp as png " + fs.lstatSync(publicPath + 'image1.png').isFile());
 
 						//var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
 						console.log("trying " +  '(cd template && zip -r ../' + publicPath + reportFileName + ' * && cd ..)');
