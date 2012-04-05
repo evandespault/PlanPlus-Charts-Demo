@@ -69,13 +69,13 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 				// Zip the document direcotry as docx
 				child = exec('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..', function(err) {
 					console.log('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..');
-					if (err) throw err;
+					if (err) console.log(err);
 
 					// Delete the temporary files
 					child = exec('rm ' + publicPath + 'template/word/media/image1.png; '
 									+ 'rm ' + publicPath + htmlFileName + '; '
 									+ 'rm ' + publicPath + svgFileName, function(err) {
-					if(err) throw err;
+					if(err) console.log(err);
 						callback();
 					});
 				});
