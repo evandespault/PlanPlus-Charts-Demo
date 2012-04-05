@@ -5,7 +5,7 @@ var gm = require('gm');
 //var im = gm.subClass({ imageMagick: true});
 var im = require('imagemagick');
 var easyimg = require('easyimage');
-var zipfile = require('zipfile');
+//var zipfile = require('zipfile');
 var id;
 var svgFileName, htmlFileName, pdfFileName;
 var publicPath = 'public/reports/';
