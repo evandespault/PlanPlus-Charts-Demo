@@ -1,8 +1,8 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
-//var gm = require('gm');
+var gm = require('gm');
 //var im = gm.subClass({ imageMagick: true});
-//var im = require('bin/imagemagick');
+var im = require('imagemagick');
 var id;
 var svgFileName, htmlFileName, pdfFileName;
 var publicPath = 'public/reports/';
@@ -63,9 +63,11 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 			} else if(format == "docx") {
 
 				// Convert svg to png
-				//im.convert(['-size', '600x400', publicPath + svgFileName, 'template/word/media/image1.png'], function(err) {
-				child = exec('convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.bmp', function(err) {
-					if (err) { console.log(err); throw err; }
+				im.convert(['-size', '600x400', publicPath + svgFileName, 'template/word/media/image1.png'], function(err) {
+				//child = exec('convert -size 600x400 ' + publicPath + svgFileName + ' template/word/media/image1.bmp', function(err) {
+		//		gm(publicPath + svgFileName).size(function (err, size) {
+												//write('template/word/media/image1.png', function (err) {
+					if (err) { console.log(err); throw err;}
 					console.log("converted svg to png");
 
 					// Zip the document direcotry as docx
@@ -87,8 +89,8 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 									console.log("temp files deleted");
 									callback();
 								});
+							});
 							//});
-						});
 					//});
 				});
 			}
