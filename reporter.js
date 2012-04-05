@@ -92,10 +92,10 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 						console.log("saved bmp as png " + fs.lstatSync('template/word/media/image1.png').isFile());
 
 						//var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
-					console.log("template/word/media/image1.png " + fs.lstatSync('template/word/media/image1.png').isFile());
-						var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' *; cd ..', function(err) {
+						console.log("trying " +  '(cd template && zip -r ../' + publicPath + reportFileName + ' * && cd ..)');
+						var child4 = exec('(cd template && zip -r ../' + publicPath + reportFileName + ' *)', function(err) {
 							if (err) { console.log(err); throw err; }
-							console.log("zipped " + fs.lstatSync(publicPath + reportFileName).isFile());
+							console.log("zip -r " + publicPath + reportFileName + " * " + fs.lstatSync(publicPath + reportFileName).isFile());
 					
 //							child = exec('cd ../../..', function(err) {
 //								if (err) { console.log(err); throw err; }
