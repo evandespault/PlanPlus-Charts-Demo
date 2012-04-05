@@ -5,6 +5,7 @@ var gm = require('gm');
 //var im = gm.subClass({ imageMagick: true});
 var im = require('imagemagick');
 var easyimg = require('easyimage');
+var zipfile = require('zipfile');
 var id;
 var svgFileName, htmlFileName, pdfFileName;
 var publicPath = 'public/reports/';
@@ -93,7 +94,7 @@ Reporter.prototype.generateReport = function(svgElement, table, format, callback
 
 						//var child4 = exec('cd template; zip -r ../' + publicPath + reportFileName + ' ' + '*; cd ..', function(err) {
 						console.log("trying " +  '(cd template && zip -r ../' + publicPath + reportFileName + ' * && cd ..)');
-						var child4 = exec('(cd template && zip -r ../' + publicPath + reportFileName + ' *)', function(err) {
+						var child4 = exec('(zip -r ../' + publicPath + reportFileName + ' *)', function(err) {
 							if (err) { console.log(err); throw err; }
 							console.log("zip -r " + publicPath + reportFileName + " * " + fs.lstatSync(publicPath + reportFileName).isFile());
 					
