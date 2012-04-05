@@ -18,10 +18,11 @@ exports.report = function (req, res) {
 	dataProvider.findOne ( reportId, function (error, data) {
 		svgContent = req.body.svg;
 		tableContent = req.body.table;
+		format = req.body.format;
 		reporter = new Reporter (reportId);
-		reporter.generateReport (svgContent, tableContent, function () {
-			res.download ('public/reports/test_report' + reportId + '.pdf', function(err) {
-				if (err) next(err);
+		reporter.generateReport (svgContent, tableContent, format, function () {
+			res.download ('public/reports/test_report' + reportId + '.' + format, function(err) {
+				if (err) console.log(err);
 			});
 		});
 	})

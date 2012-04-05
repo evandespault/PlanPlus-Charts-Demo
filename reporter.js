@@ -1,17 +1,22 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
+var im = require('imagemagick');
 var id;
 var svgFileName, htmlFileName, pdfFileName;
 var publicPath = 'public/reports/';
+var child;
 
 Reporter = function(id) {
 	this.id = id;
 }
 
-Reporter.prototype.generateReport = function(svgElement, table, callback) {
+Reporter.prototype.generateReport = function(svgElement, table, format, callback) {
 	svgFileName = 'test_report' + this.id + '.svg';
+	//pngFileName = 'test_report' + this.id + '.bmp';
+	pngFileName = 'test_report' + this.id + '.png';
 	htmlFileName = 'test_report' + this.id + '.xhtml';
-	pdfFileName = 'test_report' + this.id + '.pdf';
+	docFileName = 'test_report' + this.id + '.docx';
+	reportFileName = 'test_report' + this.id + '.' + format;
 
 	fs.writeFile(publicPath + svgFileName, svgElement, function(err) {
 		if(err) { throw err; }
@@ -35,12 +40,38 @@ Reporter.prototype.generateReport = function(svgElement, table, callback) {
 		if(err) { throw err; }
 	});
 
-	var child = exec(settings.wkhtmltopdf + " "
-									+ publicPath + htmlFileName + " "
-									+ publicPath + pdfFileName, function(err) {
-		if(err) { throw err; }
-		callback();
-	});
+	if(format == "pdf") {
+		child = exec(settings.wkhtmltopdf + " "
+										+ publicPath + htmlFileName + " "
+										+ publicPath + reportFileName, function(err) {
+			if(err) { throw err; }
+			callback();
+		});
+
+	} else if(format == "docx") {
+
+		// Convert svg to png
+		im.convert(['-size', '600x400', publicPath + svgFileName, publicPath + pngFileName], function(err, metadata) {
+			if (err) throw err;
+
+			// Insert png into docx template directory
+			child = exec('mv ' + publicPath + pngFileName + " " + publicPath + "template/word/media/image1.png", function(err) {
+				if (err) throw err;
+				
+				// Zip the document direcotry as docx
+				child = exec('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..', function(err) {
+					console.log('cd ' + publicPath + 'template; zip -r ../' + reportFileName + ' *; cd ../../..');
+					if (err) throw err;
+
+					// Delete the temporary png
+					child = exec('rm ' + publicPath + 'template/word/media/image1.png', function(err) {
+					if(err) throw err;
+						callback();
+					});
+				});
+			});
+		});
+	}
 }
 
 exports.Reporter = Reporter;

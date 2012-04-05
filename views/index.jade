@@ -37,8 +37,9 @@ html#root(lang="en")
 		form#reportForm(method="post", action="/report", target="_new")
 			input(type="text", id="svg", name="svg", style="display:none")
 			input(type="text", id="table", name="table", style="display:none")
-			input(type="button", value="Generate PDF report", onclick="submitForm()")
-			input(type="button", value="Generate Word report", onclick="submitForm()", disabled="disabled")
+			input(type="text", id="format", name="format", style="display:none")
+			input(type="button", value="Generate PDF report", onclick="submitForm('pdf')")
+			input(type="button", value="Generate Word report", onclick="submitForm('docx')") //, disabled="disabled")
 		div#report
 			h3 Projected Income
 			div#chartdiv

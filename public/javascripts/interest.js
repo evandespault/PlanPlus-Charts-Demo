@@ -222,12 +222,13 @@ function isFloat(value) {
 	return valid;
 }
 
-function submitForm() {
+function submitForm(format) {
 	var svgElement, tableElement;
 	svgElement = document.getElementById("chartdiv").firstChild.firstChild;
 	tableElement = document.getElementById("datatable");
 	document.getElementById("svg").value = new XMLSerializer().serializeToString(svgElement);
 	document.getElementById("table").value = new XMLSerializer().serializeToString(tableElement);
+	document.getElementById("format").value = format;
 	document.forms["reportForm"].submit();
 }
 
