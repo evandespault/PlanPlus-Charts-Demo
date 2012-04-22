@@ -1,33 +1,32 @@
+// Load module dependencies
 var Reporter = require ('../reporter').Reporter;
-var exec = require('child_process').exec;
-var reporter;
-var htmlContent;
-var reportId = 0;
+var exec = require ('child_process').exec;
 
+// Render the main page
 exports.index = function (req, res) {
-	dataProvider.findOne (0, function (error, data) {
-		res.render ('index', {
-			locals : {
-				title: 'Demo: Rendering Javascript charts in PDF',
-				datapoints:data
-			}
-		});
+	res.render ('index', {
+		locals : {
+			title: 'Demo: Rendering Javascript charts in PDF and DOCX',
+		}
 	});
 };
 
+// Generate a report
 exports.report = function (req, res) {
-	dataProvider.findOne ( reportId, function (error, data) {
-		svgContent = req.body.svg;
-		tableContent = req.body.table;
-		format = req.body.format;
-		reporter = new Reporter (reportId);
-		reporter.generateReport (svgContent, tableContent, format, function () {
-			res.download ('public/reports/test_report' + reportId + '.' + format, function(err) {
-				if (err) console.log(err);
-				var child = exec('rm public/reports/test_report' + reportId + '.' + format, function(err) {
-						if (err) console.log(err);
-				});
-			});
-		});
-	})
+	var htmlContent, reportId = 0;
+
+	var format = req.body.format;
+	var svgContent = req.body.svg;
+	var tableContent = req.body.table;
+
+	var reporter = new Reporter (reportId);
+	reporter.generateReport (svgContent, tableContent, format, downloadReport);
+
+	function downloadReport () {
+		res.download (settings.reportPath + 'report' + reportId + '.' + format, deleteReport);
+	}
+
+	function deleteReport () {
+		var child = exec('rm ' + settings.reportPath + 'report' + reportId + '.' + format);
+	}
 };
