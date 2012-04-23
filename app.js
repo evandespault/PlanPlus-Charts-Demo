@@ -22,6 +22,7 @@ if (app.settings.env === 'production') {
 settings.tempPath = 'public/temp/';
 settings.reportPath = 'public/reports/';
 settings.docTemplatePath = 'public/docx_template/';
+settings.docXmlTemplatePath = 'document.xml';
 settings.htmlTemplatePath = 'public/htmlTemplate.xhtml';
 settings.templateImagePath = settings.docTemplatePath + 'word/media/image1.png';
 

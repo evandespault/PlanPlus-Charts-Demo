@@ -19,8 +19,8 @@ exports.report = function (req, res) {
 	var svgContent = req.body.svg;
 	var tableContent = req.body.table;
 
-	global.reporter = new Reporter (reportId, format, svgContent, tableContent);
-	reporter.generateReport (downloadReport);
+	var reporter = new Reporter (reportId, format, svgContent, tableContent);
+	reporter.generateReport (svgContent, tableContent, format, downloadReport);
 
 	function downloadReport () {
 		res.download (settings.reportPath + 'report' + reportId + '.' + format, deleteReport);

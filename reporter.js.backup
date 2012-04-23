@@ -8,8 +8,8 @@ var zip = require ('node-native-zip');
 
 var id, format, svg, table;
 
-function Reporter (id, format, svg, table) { 
-				
+Reporter = function (id, format, svg, table) {
+
 	this.id = id;
 	this.format = format;
 	this.svg = svg;
@@ -18,58 +18,29 @@ function Reporter (id, format, svg, table) {
 
 Reporter.prototype.generateReport = function (returnReport) {
 
-	console.log ('generateReport');
 	console.log ('this.id = ' + this.id);
 	console.log ('this.format = ' + this.format);
-	
+
 	// Step 0: Delete any leftover temporary files
 	this.deleteTempFiles (function cbCreateSvg () {
 
 		// If sucessful, create the SVG file
-		reporter.createSvg (returnReport);
+		this.createSvg (returnReport);
 	});
 }
 
 // Step 0: Delete any leftover temporary files
 Reporter.prototype.deleteTempFiles = function (cbCreateSvg) {
 
-	console.log ('deleteTempFiles');
-	console.log ('this.id = ' + this.id);
-	console.log ('this.format = ' + this.format);	
+	console.log ('format = ' + this.format);	
+	console.log ('id = ' + this.id);
 	var command = 'rm report*.svg*; '
 		+ 'rm ' + settings.tempPath + '*; '
 		+ 'rm ' + settings.templateImagePath + '*; '
 		+ 'rm ' + settings.reportPath + 'report*.*;';
 
-//	exec (command);
+	exec (command);
 	cbCreateSvg ();
-}
-
-// Step 1: Create the SVG File
-Reporter.prototype.createSvg = function (returnReport) {
-
-	console.log ('createSvg');
-	console.log ('this.id = ' + this.id);
-	console.log ('this.format = ' + this.format);
-
-	var svgPath = 'report' + this.id + '.svg';
-	console.log ('svgPath = ' + svgPath);
-
-	fs.writeFile (svgPath, this.svg, function cbCreateHtml (err) {
-		if (err) throw err;
-
-		console.log ('svg is created');
-
-		// If successful, create the XHTML file
-		if (reporter.exists (svgPath)) {
-			console.log (svgPath + ' exists');
-			reporter.createHtml (svgPath, returnReport);
-		}
-		else {
-			console.log (svgPath + ' does not exist');
-			throw ('could not create ' + svgPath);
-		}
-	});
 }
 
 /*
@@ -84,10 +55,32 @@ function deleteTempFiles (tempFiles, index, callback) {
 }
 */
 
+// Step 1: Create the SVG File
+Reporter.prototype.createSvg = function (returnReport) {
+
+	var svgPath = 'report' + this.id + '.svg';
+	console.log ('svgPath = ' + svgPath);
+
+	fs.writeFile (svgPath, this.svg, function cbCreateHtml (err) {
+		if (err) throw err;
+
+		console.log ('svg is created');
+
+		// If successful, create the XHTML file
+		if (exists (svgPath)) {
+			console.log (svgPath + ' exists');
+			this.createHtml (svgPath, returnReport);
+		}
+		else {
+			console.log (svgPath + ' does not exist');
+		}
+	});
+}
+
 // Step 2: Create the XHTML file
 Reporter.prototype.createHtml = function (svgPath, returnReport) {
 
-	var htmlPath = 'report' + this.id + '.html';
+	var htmlPath = settings.tempPath + 'report' + this.id + '.html';
 	console.log ('htmlPath = ' + htmlPath);
 
 	/* READ THE HTML TEMPLATE settings.htmlTemplatePath */
@@ -109,12 +102,12 @@ Reporter.prototype.createHtml = function (svgPath, returnReport) {
 	fs.writeFile (htmlPath, html, function cbCreateReport (err) {
 		if (err) throw err;
 
-		console.log ('reporter.format = ' + reporter.format);
+		console.log (this.format);
 
 		// If successful, create the PDF or DOCX
-		if (reporter.exists (htmlPath)) {
-			if (reporter.format == "pdf") reporter.createPdf (htmlPath, returnReport);
-			else if (reporter.format == "docx") reporter.createDoc (svgPath, returnReport);
+		if (exists (htmlPath)) {
+			if (this.format == "pdf") this.createPdf (htmlPath, returnReport);
+			else if (this.format == "docx") this.createDoc (svgPath, returnReport);
 		}
 		else {
 			console.log (htmlPath + ' was not created');
@@ -133,7 +126,7 @@ Reporter.prototype.createPdf = function (htmlPath, returnReport) {
 		if (err) throw err;
 
 		// If successful, return the report
-		if (reporter.exists (reportPath)) {
+		if (exists (reportPath)) {
 			returnReport ();
 		}
 		else {
@@ -147,12 +140,12 @@ Reporter.prototype.createDoc = function (svgPath, returnReport) {
 
 	var bmpPath = settings.tempPath + 'image' + this.id + '.bmp';
 
-	if (reporter.exists (svgPath)) {
+	if (exists (svgPath)) {
 		console.log (svgPath + ' exists (createDoc)');
 	} else {
 		console.log (svgPath + ' does not exist (createDoc)');
 	}
-	if (reporter.exists (bmpPath)) {
+	if (exists (bmpPath)) {
 		console.log (bmpPath + ' exists (createDoc)');
 	} else {
 		console.log (bmpPath + ' does not exist (createDoc)');
@@ -160,14 +153,12 @@ Reporter.prototype.createDoc = function (svgPath, returnReport) {
 
 	// Convert the SVG to BMP
 	var command = 'convert -size 600x400 ' + svgPath + ' ' + bmpPath;
-
-	console.log (command);
 	exec (command, function cbReadDocTemplate (err) {
 		if (err) throw err;
 
 		// If successful, load the DOCX template
-		if (reporter.exists (bmpPath)) {
-			reporter.readDocTemplate (bmpPath, returnReport);
+		if (exists (bmpPath)) {
+			this.readDocTemplate (bmpPath, returnReport);
 		}
 		else {
 			console.log (bmpPath + ' was not created');
@@ -183,7 +174,7 @@ Reporter.prototype.readDocTemplate = function (bmpPath, returnReport) {
 		if (err) throw err;
 
 		// If successful, insert the table data into
-		reporter.updateDocTable (data, bmpPath, returnReport);
+		this.updateDocTable (data, bmpPath, returnReport);
 	});
 }
 
@@ -193,7 +184,7 @@ Reporter.prototype.updateDocTable = function (data, bmpPath, returnReport) {
 	var updatedData = data.toString ().replace ("[TABLEDATA]", ""); //table);
 	fs.writeFile (settings.docTemplatePath + 'word/document.xml', data, function cbConvertBmpPng () {
 
-		reporter.convertBmpPng (bmpPath, returnReport)
+		this.convertBmpPng (bmpPath, returnReport)
 	});
 }
 
@@ -206,7 +197,7 @@ Reporter.prototype.convertBmpPng = function (bmpPath, returnReport) {
 		if (err) throw err;
 
 		// If successful, zip the DOCX file
-		reporter.zipDoc (returnReport);
+		this.zipDoc (returnReport);
 	});
 }
 
@@ -233,7 +224,7 @@ Reporter.prototype.zipDoc = function (returnReport) {
 			if (err) throw err;
 
 			// If successful, write the zip file
-			reporter.writeZip (archive, reportPath, returnReport);
+			this.writeZip (archive, reportPath, returnReport);
 	});
 }
 	
