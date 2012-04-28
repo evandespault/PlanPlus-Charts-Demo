@@ -14,19 +14,20 @@ exports.index = function (req, res) {
 // Generate a report
 exports.report = function (req, res) {
 	var htmlContent, reportId = 0;
-
 	var format = req.body.format;
 	var svgContent = req.body.svg;
 	var tableContent = req.body.table;
 
 	global.reporter = new Reporter (reportId, format, svgContent, tableContent);
-	reporter.generateReport (downloadReport);
-
-	function downloadReport () {
-		res.download (settings.reportPath + 'report' + reportId + '.' + format, deleteReport);
-	}
-
-	function deleteReport () {
-		var child = exec('rm ' + settings.reportPath + 'report' + reportId + '.' + format);
-	}
+	reporter.generateReport (res);
 };
+
+function downloadReport (res, id, format) {
+	res.download (reportDirPath + 'report' + id + '.' + format, deleteReport (id, format));
+}
+
+function deleteReport (id, format) {
+	var child = exec('rm ' + reportDirPath + 'report' + id + '.' + format);
+}
+
+global.downloadReport = downloadReport;

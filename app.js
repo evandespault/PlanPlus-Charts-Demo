@@ -19,12 +19,30 @@ if (app.settings.env === 'production') {
 	settings.db_app = 'test';
 	settings.wkhtmltopdf = 'wkhtmltopdf';
 }
-settings.tempPath = 'public/temp/';
-settings.reportPath = 'public/reports/';
-settings.docTemplatePath = 'public/docx_template/';
-settings.docXmlTemplatePath = 'document.xml';
-settings.htmlTemplatePath = 'public/htmlTemplate.xhtml';
-settings.templateImagePath = settings.docTemplatePath + 'word/media/image1.png';
+global.tempPath = 'public/temp/';
+global.reportDirPath = 'public/reports/';
+global.docTemplatePath = 'public/docx_template/';
+global.docXmlTemplatePath = 'document.xml';
+global.htmlTemplatePath = 'htmlTemplate.xhtml';
+global.svgPath = 'report.svg';
+global.bmpPath = tempPath + 'image.bmp';
+global.pngPath = docTemplatePath + 'word/media/image1.png';
+
+global.docFiles = [
+		{ name: '[Content_Types].xml', path: docTemplatePath + '[Content_Types].xml' },
+		{ name: '_rels/.rels', path: docTemplatePath + '_rels/.rels' },
+		{ name: 'docProps/app.xml', path: docTemplatePath + 'docProps/app.xml' },
+		{ name: 'docProps/core.xml', path: docTemplatePath + 'docProps/core.xml' },
+		{ name: 'word/document.xml', path: docTemplatePath + 'word/document.xml' },
+		{ name: 'word/fontTable.xml', path: docTemplatePath + 'word/fontTable.xml' },
+		{ name: 'word/settings.xml', path: docTemplatePath + 'word/settings.xml' },
+		{ name: 'word/styles.xml', path: docTemplatePath + 'word/styles.xml' },
+		{ name: 'word/stylesWithEffects.xml', path: docTemplatePath + 'word/stylesWithEffects.xml' },
+		{ name: 'word/webSettings.xml', path: docTemplatePath + 'word/webSettings.xml' },
+		{ name: 'word/_rels/document.xml.rels', path: docTemplatePath + 'word/_rels/document.xml.rels' },
+		{ name: 'word/media/image1.png', path: pngPath },
+		{ name: 'word/theme/theme1.xml', path: docTemplatePath + 'word/theme/theme1.xml' }
+]
 
 app.configure (function () {
   app.set ('views', __dirname + '/views');

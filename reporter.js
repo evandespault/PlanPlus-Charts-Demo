@@ -5,273 +5,178 @@ var spawn = require ('child_process').spawn;
 var gm = require ('gm');
 var im = require ('imagemagick');
 var zip = require ('node-native-zip');
+var xml = require ('libxmljs');
 
-var id, format, svg, table;
+var id, format, svg, table, htmlPath, reportPath, response;
+// var svgPath, bmpPath, pngPath, htmlPath, reportPath;
 
+// Constructor
 function Reporter (id, format, svg, table) { 
-				
 	this.id = id;
 	this.format = format;
 	this.svg = svg;
 	this.table = table;
+	this.htmlPath = tempPath + 'report' + id + '.xhtml';
+	this.reportPath = reportDirPath + 'report' + id + '.' + format;
+	this.response = '';
 }
 
-Reporter.prototype.generateReport = function (returnReport) {
-
-	console.log ('generateReport');
-	console.log ('this.id = ' + this.id);
-	console.log ('this.format = ' + this.format);
-	
-	// Step 0: Delete any leftover temporary files
-	this.deleteTempFiles (function cbCreateSvg () {
-
-		// If sucessful, create the SVG file
-		reporter.createSvg (returnReport);
-	});
+// Generate a report
+Reporter.prototype.generateReport = function (res) {
+	this.response = res;
+	reporter.createSvg ();
 }
 
-// Step 0: Delete any leftover temporary files
-Reporter.prototype.deleteTempFiles = function (cbCreateSvg) {
-
-	console.log ('deleteTempFiles');
-	console.log ('this.id = ' + this.id);
-	console.log ('this.format = ' + this.format);	
-	var command = 'rm report*.svg*; '
-		+ 'rm ' + settings.tempPath + '*; '
-		+ 'rm ' + settings.templateImagePath + '*; '
-		+ 'rm ' + settings.reportPath + 'report*.*;';
-
-//	exec (command);
-	cbCreateSvg ();
-}
-
-// Step 1: Create the SVG File
-Reporter.prototype.createSvg = function (returnReport) {
-
-	console.log ('createSvg');
-	console.log ('this.id = ' + this.id);
-	console.log ('this.format = ' + this.format);
-
-	var svgPath = 'report' + this.id + '.svg';
-	console.log ('svgPath = ' + svgPath);
-
+// PDF/DOCX step 1: Create the SVG File
+Reporter.prototype.createSvg = function () {
 	fs.writeFile (svgPath, this.svg, function cbCreateHtml (err) {
 		if (err) throw err;
 
-		console.log ('svg is created');
-
-		// If successful, create the XHTML file
+		// If successful, create the PDF or DOCX report
 		if (reporter.exists (svgPath)) {
-			console.log (svgPath + ' exists');
-			reporter.createHtml (svgPath, returnReport);
+			if (reporter.format == "pdf") reporter.loadHtmlTemplate ();
+			else if (reporter.format == "docx") reporter.convertSvgBmp ();
 		}
 		else {
-			console.log (svgPath + ' does not exist');
-			throw ('could not create ' + svgPath);
+			throw ('Error: Could not create ' + svgPath + ' (createSvg)');
 		}
 	});
 }
 
-/*
-function deleteTempFiles (tempFiles, index, callback) {
-	deleteIfExists (tempFiles[index], function () {
-		if (++index === tempFiles.length) {
-			callback ();
-			return;
-		}
-		deleteTempFiles (tempFiles, index, callback);
-	});
-}
-*/
-
-// Step 2: Create the XHTML file
-Reporter.prototype.createHtml = function (svgPath, returnReport) {
-
-	var htmlPath = 'report' + this.id + '.html';
-	console.log ('htmlPath = ' + htmlPath);
-
-	/* READ THE HTML TEMPLATE settings.htmlTemplatePath */
-
-	var html =
-			'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
-		+ '<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" lang="en">'
-		+ '<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
-		+ '<title>Rendering amCharts in HTML and PDF</title>'
-		+ '<link rel="stylesheet" href="../stylesheets/pdfstyle.css" /></head>'
-		+ '<body><div id="report">'
-		+ '<h3>Projected Income</h3>'
-		+ '<div id="chartDiv">'
-		+ '<object data="' + svgPath + '" type="image/svg+xml" width="620px" height="420px"></object>'
-		+ '</div>'
-		+ this.table
-		+ '</div></body></html>';
-
-	fs.writeFile (htmlPath, html, function cbCreateReport (err) {
+// PDF step 2: Load the XHTML template
+Reporter.prototype.loadHtmlTemplate = function () {
+	var htmlContent;
+	fs.readFile (htmlTemplatePath, function cbCreateHtml (err, htmlContent) {
 		if (err) throw err;
 
-		console.log ('reporter.format = ' + reporter.format);
-
-		// If successful, create the PDF or DOCX
-		if (reporter.exists (htmlPath)) {
-			if (reporter.format == "pdf") reporter.createPdf (htmlPath, returnReport);
-			else if (reporter.format == "docx") reporter.createDoc (svgPath, returnReport);
-		}
-		else {
-			console.log (htmlPath + ' was not created');
-		}
+		// If successful, create the XHTML report
+		reporter.createHtml (htmlContent);
 	});
 }
 
-// Step 3: Create the PDF
-Reporter.prototype.createPdf = function (htmlPath, returnReport) {
+// PDF step 3: Create the XHTML file
+Reporter.prototype.createHtml = function (htmlContent) {
+	var htmlPath = this.htmlPath;
+	htmlContent = htmlContent.toString ().replace ("[SVGDATA]", "../../" + svgPath);
+	htmlContent = htmlContent.replace ("[TABLEDATA]", this.table);
+	fs.writeFile (htmlPath, htmlContent, function cbCreateReport (err) {
+		if (err) throw err;
 
-	var reportPath = settings.reportPath + 'report' + this.id + '.pdf';
+		// If successful, create the PDF
+		if (reporter.exists (htmlPath)) reporter.createPdf ();
+		else console.log ('Error: Could not create ' + htmlPath + ' (createHtml)');
+	});
+}
 
-	// Convert the XHTML to PDF using wkhtmltopdf
+// PDF step 4: Convert the XHTML to PDF using wkhtmltopdf
+Reporter.prototype.createPdf = function () {
+	var response = this.response;
+	var id = this.id;
+	var format = this.format;
+	var htmlPath = this.htmlPath;
+	var reportPath = this.reportPath;
 	var command =	settings.wkhtmltopdf + " " + htmlPath + " "	+ reportPath;
 	exec (command, function cbReturnReport (err) {
 		if (err) throw err;
 
 		// If successful, return the report
-		if (reporter.exists (reportPath)) {
-			returnReport ();
-		}
-		else {
-			console.log (reportPath + ' was not created');
-		}
+		if (reporter.exists (reportPath)) downloadReport (response, id, format);
+		else console.log ('Error: Could not create ' + reportPath + ' (createPdf)');
 	});
 }
 
-// Step 3: Create the DOCX
-Reporter.prototype.createDoc = function (svgPath, returnReport) {
-
-	var bmpPath = settings.tempPath + 'image' + this.id + '.bmp';
-
-	if (reporter.exists (svgPath)) {
-		console.log (svgPath + ' exists (createDoc)');
-	} else {
-		console.log (svgPath + ' does not exist (createDoc)');
-	}
-	if (reporter.exists (bmpPath)) {
-		console.log (bmpPath + ' exists (createDoc)');
-	} else {
-		console.log (bmpPath + ' does not exist (createDoc)');
-	}
-
-	// Convert the SVG to BMP
+// DOCX step 2: Convert the SVG chart to a BMP image
+Reporter.prototype.convertSvgBmp = function () {
 	var command = 'convert -size 600x400 ' + svgPath + ' ' + bmpPath;
+	exec (command, function cbConvertBmpPng (err) {
+		if (err) throw err;
 
-	console.log (command);
+		// If successful, convert the BMP image to a PNG image
+		if (reporter.exists (bmpPath)) reporter.convertBmpPng ();
+		else console.log ('Error: Could not create ' + bmpPath);
+	});
+}
+
+// DOCX step 3: Convert the BMP image to a PNG image
+Reporter.prototype.convertBmpPng = function () {
+	var command = 'mv ' + bmpPath + ' ' + pngPath;
 	exec (command, function cbReadDocTemplate (err) {
 		if (err) throw err;
 
 		// If successful, load the DOCX template
-		if (reporter.exists (bmpPath)) {
-			reporter.readDocTemplate (bmpPath, returnReport);
-		}
-		else {
-			console.log (bmpPath + ' was not created');
-		}
+		if (reporter.exists (pngPath)) reporter.readDocTemplate ();
+		else console.log ('Error: Could not create ' + pngPath);
 	});
 }
 
-// Step 4: Read the document template
-Reporter.prototype.readDocTemplate = function (bmpPath, returnReport) {
-
+// DOCX step 4: Read the document template
+Reporter.prototype.readDocTemplate = function () {
 	var data;
-	fs.readFile (settings.docXmlTemplatePath, function cbUpdateDocTable (err, data) {
+	fs.readFile (docXmlTemplatePath, function cbUpdateDocTable (err, data) {
 		if (err) throw err;
 
 		// If successful, insert the table data into
-		reporter.updateDocTable (data, bmpPath, returnReport);
+		reporter.updateDocTable (data);
 	});
 }
 
-// Update the document table	
-Reporter.prototype.updateDocTable = function (data, bmpPath, returnReport) {
+// DOCX step 5: Update the document table	
+Reporter.prototype.updateDocTable = function (data) {
+	var xmlOutput = '';
+	var xmlTable = xml.parseXmlString (this.table);
+	var rows = xmlTable.root ().childNodes ();
+	var rowIndex = 0;
+	rows.forEach (function (row) {
+		if (row.attr ('class').value () != 'header') {
+			var cols = row.childNodes ();
+			xmlOutput += '<w:tr w:rsidR="0010280B" w:rsidTr="00880722">';
+			if (rowIndex == 0) {
+				xmlOutput += '<w:trPr><w:cnfStyle w:val="000000100000" w:firstRow="0" w:lastRow="0" w:firstColumn="0" w:lastColumn="0" w:oddVBand="0" w:evenVBand="0" w:oddHBand="1" w:evenHBand="0" w:firstRowFirstColumn="0" w:firstRowLastColumn="0" w:lastRowFirstColumn="0" w:lastRowLastColumn="0"/></w:trPr>';
+			}
+			xmlOutput += '<w:tc><w:tcPr><w:cnfStyle w:val="001000000000" w:firstRow="0" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:oddVBand="0" w:evenVBand="0" w:oddHBand="0" w:evenHBand="0" w:firstRowFirstColumn="0" w:firstRowLastColumn="0" w:lastRowFirstColumn="0" w:lastRowLastColumn="0"/><w:tcW w:w="2394" w:type="dxa"/></w:tcPr><w:p w:rsidR="0010280B" w:rsidRDefault="0010280B" w:rsidP="0010280B"><w:pPr><w:jc w:val="right"/></w:pPr><w:r><w:t>' + cols[0].text () + '</w:t></w:r></w:p></w:tc>';
+			cols.shift ();
+			cols.forEach (function (col) {
+				xmlOutput += '<w:tc><w:tcPr><w:tcW w:w="2394" w:type="dxa"/></w:tcPr><w:p w:rsidR="0010280B" w:rsidRDefault="0010280B" w:rsidP="0010280B"><w:pPr><w:jc w:val="right"/><w:cnfStyle w:val="000000100000" w:firstRow="0" w:lastRow="0" w:firstColumn="0" w:lastColumn="0" w:oddVBand="0" w:evenVBand="0" w:oddHBand="1" w:evenHBand="0" w:firstRowFirstColumn="0" w:firstRowLastColumn="0" w:lastRowFirstColumn="0" w:lastRowLastColumn="0"/></w:pPr><w:r><w:t>' + col.text () + '</w:t></w:r></w:p></w:tc>';
+			rowIndex ++;
+			});
+			xmlOutput += '</w:tr>';
+		}
+	});
+	var updatedData = data.toString ().replace ("[TABLEDATA]", xmlOutput); //table);
 
-	var updatedData = data.toString ().replace ("[TABLEDATA]", ""); //table);
-	fs.writeFile (settings.docTemplatePath + 'word/document.xml', data, function cbConvertBmpPng () {
-
-		reporter.convertBmpPng (bmpPath, returnReport)
+	fs.writeFile (docTemplatePath + 'word/document.xml', updatedData, function cbZipDoc () {
+		reporter.zipDoc ()
 	});
 }
 
-// Convert bmp to png
-Reporter.prototype.convertBmpPng = function (bmpPath, returnReport) {
-
-	var pngPath = settings.templateImagePath;
-	var command = 'mv ' + bmpPath + '	' + pngPath;
-	exec (command, function cbZipDoc (err) {
-		if (err) throw err;
-
-		// If successful, zip the DOCX file
-		reporter.zipDoc (returnReport);
-	});
-}
-
-// Zip the document directory as a docx file
-Reporter.prototype.zipDoc = function (returnReport) {
-
-	var reportPath = settings.reportPath + 'report' + this.id + '.docx';
+// DOCX step 6: Zip the document directory as a docx file
+Reporter.prototype.zipDoc = function () {
 	var archive = new zip ();
-	archive.addFiles ([
-		{ name: '[Content_Types].xml', path: settings.docTemplatePath + '[Content_Types].xml' },
-		{ name: '_rels/.rels', path: settings.docTemplatePath + '_rels/.rels' },
-		{ name: 'docProps/app.xml', path: settings.docTemplatePath + 'docProps/app.xml' },
-		{ name: 'docProps/core.xml', path: settings.docTemplatePath + 'docProps/core.xml' },
-		{ name: 'word/document.xml', path: settings.docTemplatePath + 'word/document.xml' },
-		{ name: 'word/fontTable.xml', path: settings.docTemplatePath + 'word/fontTable.xml' },
-		{ name: 'word/settings.xml', path: settings.docTemplatePath + 'word/settings.xml' },
-		{ name: 'word/styles.xml', path: settings.docTemplatePath + 'word/styles.xml' },
-		{ name: 'word/stylesWithEffects.xml', path: settings.docTemplatePath + 'word/stylesWithEffects.xml' },
-		{ name: 'word/webSettings.xml', path: settings.docTemplatePath + 'word/webSettings.xml' },
-		{ name: 'word/_rels/document.xml.rels', path: settings.docTemplatePath + 'word/_rels/document.xml.rels' },
-		{ name: 'word/media/image1.png', path: settings.templateImagePath },
-		{ name: 'word/theme/theme1.xml', path: settings.docTemplatePath + 'word/theme/theme1.xml' }
-	], function cbWriteZip (err) {
+	archive.addFiles (docFiles, function cbWriteZip (err) {
 			if (err) throw err;
 
 			// If successful, write the zip file
-			reporter.writeZip (archive, reportPath, returnReport);
+			reporter.writeZip (archive);
 	});
 }
 	
-// Write the zipped docx
-Reporter.prototype.writeZip = function (archive, reportPath, returnReport) {
-
+// DOCX step 7: Write the zipped docx
+Reporter.prototype.writeZip = function (archive) {
+	var response = this.response;
+	var id = this.id;
+	var format = this.format;
+	var reportPath = this.reportPath;
 	var buff = archive.toBuffer ();
 	fs.writeFile (reportPath, buff, function cbReturnReport (err) {
 		if (err) throw err;
 
 		// If successful, return the report
-		returnReport ();
+		if (reporter.exists (reportPath)) downloadReport (response, id, format);
+		else console.log ('Error: Could not create ' + reportPath);
 	});
 }
 
-/*
-function deleteIfExists (file, callback) {
-	var command;
-	console.log ('deleting ' + file);
-	if (exists (file)) {
-		command = 'rm ' + file + '; ';
-		exec (command, function report (err) {
-			if (err) {
-				console.log ('could not delete ' + file);
-				throw err;
-			} else {
-				console.log (file + ' deleted');
-			}
-			callback ();
-		});
-	}
-	else {
-		console.log (file + ' does not exist');
-		callback ();
-	}
-}
-*/
-
+// Check if the given file exists
 Reporter.prototype.exists = function (file) {
 	try {
 		if (fs.lstatSync (file).isFile ()) return true;
