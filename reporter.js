@@ -5,7 +5,7 @@ var spawn = require ('child_process').spawn;
 var gm = require ('gm');
 var im = require ('imagemagick');
 var zip = require ('node-native-zip');
-var xml = require ('libxmljs');
+var xml = require ('xml2js');
 
 var id, format, svg, table, htmlPath, reportPath, response;
 // var svgPath, bmpPath, pngPath, htmlPath, reportPath;
@@ -122,28 +122,28 @@ Reporter.prototype.readDocTemplate = function () {
 
 // DOCX step 5: Update the document table	
 Reporter.prototype.updateDocTable = function (data) {
-	var xmlOutput = '';
-	var xmlTable = xml.parseXmlString (this.table);
-	var rows = xmlTable.root ().childNodes ();
-	var rowIndex = 0;
-	rows.forEach (function (row) {
-		if (row.attr ('class').value () != 'header') {
-			var cols = row.childNodes ();
+	var xmlOutput, updatedData = '';
+	var parser = new xml.Parser ();
+	parser.parseString (this.table, function (err, xmlTable) {
+		var rows = xmlTable.tr;
+		rows.shift ();
+		for (var rowIndex in rows) {
 			xmlOutput += TR_OPEN;
 			if (rowIndex == 0) xmlOutput += TR_PROPS;
-			xmlOutput += TC_OPEN + TC_PROPS_0 + cols[0].text () + TC_CLOSE;
+			var cols = rows[rowIndex].td;
+			xmlOutput += TC_OPEN + TC_PROPS_0 + cols[0] + TC_CLOSE;
 			cols.shift ();
-			cols.forEach (function (col) {
-				xmlOutput += TC_OPEN + TC_PROPS_N + col.text () + TC_CLOSE;
-				rowIndex ++;
-			});
+			for (var colIndex in cols) {
+				var col = cols[colIndex];
+				xmlOutput += TC_OPEN + TC_PROPS_N + col + TC_CLOSE;
+				console.log (col);
+			}
 			xmlOutput += TR_CLOSE;
 		}
-	});
-	var updatedData = data.toString ().replace ("[TABLEDATA]", xmlOutput); //table);
-
-	fs.writeFile (docTemplatePath + 'word/document.xml', updatedData, function cbZipDoc () {
-		reporter.zipDoc ()
+		updatedData = data.toString ().replace ("[TABLEDATA]", xmlOutput);
+		fs.writeFile (docTemplatePath + 'word/document.xml', updatedData, function cbZipDoc () {
+			reporter.zipDoc ()
+		});
 	});
 }
 
