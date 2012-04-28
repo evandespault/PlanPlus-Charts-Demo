@@ -8,7 +8,7 @@
 		, "imagemagick" : "0.1.2"
 		, "gm" : "1.0.1"
 		, "easyimage" : "0.0.4"
-		, "libxmljs" : "0.5.4"
+		, "libxmljs" : "<= 0.5.4"
 		, "node-native-zip" : "1.0.1"
   	},
 		"engines": {
