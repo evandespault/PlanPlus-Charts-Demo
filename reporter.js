@@ -136,7 +136,6 @@ Reporter.prototype.updateDocTable = function (data) {
 			for (var colIndex in cols) {
 				var col = cols[colIndex];
 				xmlOutput += TC_OPEN + TC_PROPS_N + col + TC_CLOSE;
-				console.log (col);
 			}
 			xmlOutput += TR_CLOSE;
 		}
