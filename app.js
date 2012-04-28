@@ -44,6 +44,14 @@ global.docFiles = [
 		{ name: 'word/theme/theme1.xml', path: docTemplatePath + 'word/theme/theme1.xml' }
 ]
 
+global.TR_OPEN = '<w:tr w:rsidR="0010280B" w:rsidTr="00880722">'; 
+global.TR_CLOSE = '</w:tr>';
+global.TR_PROPS = '<w:trPr><w:cnfStyle w:val="000000100000" w:firstRow="0" w:lastRow="0" w:firstColumn="0" w:lastColumn="0" w:oddVBand="0" w:evenVBand="0" w:oddHBand="1" w:evenHBand="0" w:firstRowFirstColumn="0" w:firstRowLastColumn="0" w:lastRowFirstColumn="0" w:lastRowLastColumn="0"/></w:trPr>';
+global.TC_OPEN = '<w:tc>';
+global.TC_PROPS_0 = '<w:tcPr><w:cnfStyle w:val="001000000000" w:firstRow="0" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:oddVBand="0" w:evenVBand="0" w:oddHBand="0" w:evenHBand="0" w:firstRowFirstColumn="0" w:firstRowLastColumn="0" w:lastRowFirstColumn="0" w:lastRowLastColumn="0"/><w:tcW w:w="2394" w:type="dxa"/></w:tcPr>' + '<w:p w:rsidR="0010280B" w:rsidRDefault="0010280B" w:rsidP="0010280B"><w:pPr><w:jc w:val="right"/></w:pPr><w:r><w:t>';
+global.TC_PROPS_N = '<w:tcPr><w:tcW w:w="2394" w:type="dxa"/></w:tcPr><w:p w:rsidR="0010280B" w:rsidRDefault="0010280B" w:rsidP="0010280B"><w:pPr><w:jc w:val="right"/><w:cnfStyle w:val="000000100000" w:firstRow="0" w:lastRow="0" w:firstColumn="0" w:lastColumn="0" w:oddVBand="0" w:evenVBand="0" w:oddHBand="1" w:evenHBand="0" w:firstRowFirstColumn="0" w:firstRowLastColumn="0" w:lastRowFirstColumn="0" w:lastRowLastColumn="0"/></w:pPr><w:r><w:t>';
+global.TC_CLOSE = '</w:t></w:r></w:p></w:tc>'; 
+
 app.configure (function () {
   app.set ('views', __dirname + '/views');
   app.set ('view engine', 'jade');

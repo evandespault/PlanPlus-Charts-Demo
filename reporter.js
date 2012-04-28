@@ -129,17 +129,15 @@ Reporter.prototype.updateDocTable = function (data) {
 	rows.forEach (function (row) {
 		if (row.attr ('class').value () != 'header') {
 			var cols = row.childNodes ();
-			xmlOutput += '<w:tr w:rsidR="0010280B" w:rsidTr="00880722">';
-			if (rowIndex == 0) {
-				xmlOutput += '<w:trPr><w:cnfStyle w:val="000000100000" w:firstRow="0" w:lastRow="0" w:firstColumn="0" w:lastColumn="0" w:oddVBand="0" w:evenVBand="0" w:oddHBand="1" w:evenHBand="0" w:firstRowFirstColumn="0" w:firstRowLastColumn="0" w:lastRowFirstColumn="0" w:lastRowLastColumn="0"/></w:trPr>';
-			}
-			xmlOutput += '<w:tc><w:tcPr><w:cnfStyle w:val="001000000000" w:firstRow="0" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:oddVBand="0" w:evenVBand="0" w:oddHBand="0" w:evenHBand="0" w:firstRowFirstColumn="0" w:firstRowLastColumn="0" w:lastRowFirstColumn="0" w:lastRowLastColumn="0"/><w:tcW w:w="2394" w:type="dxa"/></w:tcPr><w:p w:rsidR="0010280B" w:rsidRDefault="0010280B" w:rsidP="0010280B"><w:pPr><w:jc w:val="right"/></w:pPr><w:r><w:t>' + cols[0].text () + '</w:t></w:r></w:p></w:tc>';
+			xmlOutput += TR_OPEN;
+			if (rowIndex == 0) xmlOutput += TR_PROPS;
+			xmlOutput += TC_OPEN + TC_PROPS_0 + cols[0].text () + TC_CLOSE;
 			cols.shift ();
 			cols.forEach (function (col) {
-				xmlOutput += '<w:tc><w:tcPr><w:tcW w:w="2394" w:type="dxa"/></w:tcPr><w:p w:rsidR="0010280B" w:rsidRDefault="0010280B" w:rsidP="0010280B"><w:pPr><w:jc w:val="right"/><w:cnfStyle w:val="000000100000" w:firstRow="0" w:lastRow="0" w:firstColumn="0" w:lastColumn="0" w:oddVBand="0" w:evenVBand="0" w:oddHBand="1" w:evenHBand="0" w:firstRowFirstColumn="0" w:firstRowLastColumn="0" w:lastRowFirstColumn="0" w:lastRowLastColumn="0"/></w:pPr><w:r><w:t>' + col.text () + '</w:t></w:r></w:p></w:tc>';
-			rowIndex ++;
+				xmlOutput += TC_OPEN + TC_PROPS_N + col.text () + TC_CLOSE;
+				rowIndex ++;
 			});
-			xmlOutput += '</w:tr>';
+			xmlOutput += TR_CLOSE;
 		}
 	});
 	var updatedData = data.toString ().replace ("[TABLEDATA]", xmlOutput); //table);
