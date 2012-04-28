@@ -12,6 +12,6 @@
 		, "node-native-zip" : "1.0.1"
   	},
 		"engines": {
-			"node": ">= 0.4.7"
+			"node": "0.4.7"
 		}
 }
