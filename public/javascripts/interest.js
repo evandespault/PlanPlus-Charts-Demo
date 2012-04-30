@@ -12,7 +12,6 @@ AmCharts.ready(function () {
 
 	// hide range input on firefox and ie
 	var rangeIsSupported = (document.getElementById('r0').type === "range");
-	alert (rangeIsSupported);
 
 	// initialize
 	for (var i = 0; i < investments.length; i ++) {
@@ -29,6 +28,10 @@ AmCharts.ready(function () {
 		document.getElementById('p' + i).value = investments[i].p;
 		document.getElementById('r' + i).value = investments[i].i;
 		document.getElementById('i' + i).value = document.getElementById('r' + i).value;
+
+		if (!rangeIsSupported) {
+			document.getElementById('r' + i).type = "hidden";
+		}
 	}
 	recalculate();
 
