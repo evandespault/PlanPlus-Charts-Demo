@@ -16,29 +16,32 @@ html#root(lang="en")
 					div(class="inv_name_a") Investment A
 					div(class="inv_p")
 						$
-						input(class="inv_p_input", type="number", id="p0", name="p0", min="0")
+						input(class="inv_p_input", type="number", id="p0", name="p0", min="0", step="100", required="true")
 					div(class="inv_i")
-						input(class="inv_i_input", type="number", id="i0", name="i0")
+						input(class="inv_i_input", type="text", id="i0", name="i0")
+						input(class="inv_i_range", type="range", id="r0", name="r0", min="0", max="0.5", step="0.01")
 				div(class="inv")
 					div(class="inv_name_b") Investment B
 					div(class="inv_p")
 						$
-						input(class="inv_p_input", type="number", id="p1", name="p1", min="0")
+						input(class="inv_p_input", type="number", id="p1", name="p1", min="0", step="100", required="true")
 					div(class="inv_i")
-						input(class="inv_i_input", type="number", id="i1", name="i1")
+						input(class="inv_i_input", type="text", id="i1", name="i1")
+						input(class="inv_i_range", type="range", id="r1", name="r1", min="0", max="0.5", step="0.01")
 				div(class="inv")
 					div(class="inv_name_c") Investment C
 					div(class="inv_p")
 						$
-						input(class="inv_p_input", type="number", id="p2", name="p2", min="0")
+						input(class="inv_p_input", type="number", id="p2", name="p2", min="0", step="100", required="true")
 					div(class="inv_i")
-						input(class="inv_i_input", type="number", id="i2", name="i2")
+						input(class="inv_i_input", type="text", id="i2", name="i2")
+						input(class="inv_i_range", type="range", id="r2", name="r2", min="0", max="0.5", step="0.01")
 		form#reportForm(method="post", action="/report", target="_new")
 			input(type="text", id="svg", name="svg", style="display:none")
 			input(type="text", id="table", name="table", style="display:none")
 			input(type="text", id="format", name="format", style="display:none")
 			input(type="button", value="Generate PDF report", onclick="submitForm('pdf')")
-			input(type="button", value="Generate Word report", onclick="submitForm('docx')")
+			input(type="button", value="Generate DOCX report", onclick="submitForm('docx')")
 		div#report
 			h3 Projected Income
 			div#chartdiv

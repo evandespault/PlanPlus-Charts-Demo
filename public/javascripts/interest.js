@@ -12,10 +12,19 @@ AmCharts.ready(function () {
 
 	// initialize
 	for (var i = 0; i < investments.length; i ++) {
-		document.getElementById('p' + i).addEventListener('change', recalculate, false);
-		document.getElementById('i' + i).addEventListener('change', recalculate, false);
+		document.getElementById('p' + i).addEventListener('change', pChanged, false);
+		document.getElementById('r' + i).addEventListener('change', rChanged, false);
+		document.getElementById('i' + i).addEventListener('change', iChanged, false);
+		document.getElementById('p' + i).addEventListener('blur', pChanged, false);
+		document.getElementById('r' + i).addEventListener('blur', rChanged, false);
+		document.getElementById('i' + i).addEventListener('blur', iChanged, false);
+		document.getElementById('p' + i).addEventListener('click', pChanged, false);
+		document.getElementById('r' + i).addEventListener('click', rChanged, false);
+		document.getElementById('i' + i).addEventListener('click', iChanged, false);
+		document.getElementById('r' + i).addEventListener('mouseup', rChanged, false);
 		document.getElementById('p' + i).value = investments[i].p;
-		document.getElementById('i' + i).value = investments[i].i;
+		document.getElementById('r' + i).value = investments[i].i;
+		document.getElementById('i' + i).value = document.getElementById('r' + i).value;
 	}
 	recalculate();
 
@@ -137,6 +146,24 @@ function regenerateChartData() {
 	chart.write("chartdiv");
 }
 */
+
+function pChanged() {
+	recalculate();
+}
+
+function rChanged() {
+	recalculate();
+	for (var i = 0; i < investments.length; i ++) {
+		document.getElementById('i' + i).value = document.getElementById('r' + i).value;
+	}
+}
+
+function iChanged() {
+	for (var i = 0; i < investments.length; i ++) {
+		document.getElementById('r' + i).value = document.getElementById('i' + i).value;
+	}
+	recalculate();
+}
 
 function recalculate() {
 	var data = new Array();

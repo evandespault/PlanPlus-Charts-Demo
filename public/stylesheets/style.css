@@ -22,7 +22,7 @@ input {
 }
 
 #calcForm {
-	width: 600px;
+	width: 700px;
 	padding: 5px;
 	margin-bottom: 10px;
 	background-color: #A0AEC1;
@@ -84,8 +84,12 @@ input {
 	width: 50px;
 }
 
+.inv_i_range {
+	vertical-align: middle;
+}
+
 #report {
-	width: 600px;
+	width: 700px;
 	background-color: #FFFFFF;
 	border: 1px solid #495E88;
 	margin-top: 10px;
