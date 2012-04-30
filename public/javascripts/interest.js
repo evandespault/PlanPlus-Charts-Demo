@@ -10,6 +10,10 @@ investments.push({p: 12750, i: 0.06});
 
 AmCharts.ready(function () {
 
+	// hide range input on firefox and ie
+	var rangeIsSupported = (document.getElementById('r0').type === "range");
+	alert (rangeIsSupported);
+
 	// initialize
 	for (var i = 0; i < investments.length; i ++) {
 		document.getElementById('p' + i).addEventListener('change', pChanged, false);
