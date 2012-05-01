@@ -6485,7 +6485,7 @@ AmCharts.AmDraw = AmCharts.Class({
             e.style.width = b + "px";
             e.style.height = d + "px";
             e.setAttribute("version", "1.1");
-            e.setAttribute("xmlns", AmCharts.SVG_NS);
+           // e.setAttribute("xmlns", AmCharts.SVG_NS);
             a.appendChild(e);
             this.container = e;
             this.R = new AmCharts.SVGRenderer(this)
