@@ -4,9 +4,15 @@ var investments = [];
 var chartData = [];
 
 // default data
-investments.push({p: 10000, i: 0.05});
-investments.push({p: 5000, i: 0.09});
-investments.push({p: 12750, i: 0.06});
+var principal, interest;
+for (var i = 0; i < 3; i ++) {
+	var investment = new Object();
+	principal = Math.floor (Math.random () * 20000);
+	interest = Math.floor (Math.random () * 10) / 100;
+	investment.p = principal;
+	investment.i = interest;
+	investments.push (investment);
+}
 
 AmCharts.ready(function () {
 
