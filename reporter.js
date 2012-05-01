@@ -29,6 +29,13 @@ Reporter.prototype.generateReport = function (res) {
 
 // PDF/DOCX step 1: Create the SVG File
 Reporter.prototype.createSvg = function () {
+	// An AmCharts bug results in the xmlns attribute being defined twice on some browsers. Fix it.
+	var numXmlNs = this.svg.match (/xmlns/g).length;
+	if (numXmlNs === 2) {
+		this.svg = this.svg.replace ('xmlns="http://www.w3.org/2000/svg"', '');
+	}
+
+	// Write the svg file
 	fs.writeFile (svgPath, this.svg, function cbCreateHtml (err) {
 		if (err) throw err;
 
