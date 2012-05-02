@@ -6,6 +6,7 @@ html#root(lang="en")
 		script(type="text/javascript", src="/javascripts/interest.js")
 	body
 		h1(class="title")= title
+		p This is a demonstration of how to generate interactive Javascript charts in the browser, which can then be exported into PDF or DOCX reports.
 		form#inputForm(id="calcForm", method="get", action="")
 			h2 Investment Income Calculator
 			div(class="inv_table")
@@ -50,3 +51,5 @@ html#root(lang="en")
 			h3 Projected Income
 			div#chartdiv
 			table#datatable
+		div#footer
+			p Created by Evan Despault, for PlanPlus Inc., 2012

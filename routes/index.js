@@ -9,7 +9,7 @@ var reportReady = false;
 exports.index = function (req, res) {
 	res.render ('index', {
 		locals : {
-			title: 'Demo: Rendering Javascript charts in PDF and DOCX',
+			title: 'PlanPlus Chart Reporting Demo',
 		}
 	});
 };

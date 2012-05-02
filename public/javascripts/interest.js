@@ -25,9 +25,9 @@ function loadReportWhenReady (reportId, format) {
 		}, "text");
 }
 
-$(document).ready (function aaa () {
+$(document).ready (function () {
 	// Override the submit event
-	$("#reportForm").submit (function bbb (e) {
+	$("#reportForm").submit (function (e) {
 		var svgElement, tableElement;
 		svgElement = document.getElementById("chartdiv").firstChild.firstChild;
 		tableElement = document.getElementById("datatable");
@@ -41,7 +41,7 @@ $(document).ready (function aaa () {
 		$.post (
 			form.attr ('action'),
 			form.serialize (),
-			function ttt (reportId) {
+			function (reportId) {
 				reportTimer = setInterval (function () { loadReportWhenReady (reportId, format); }, 1000);
 			}, "text"
 		);
