@@ -2,20 +2,65 @@ var chart;
 var chartCursor;
 var investments = [];
 var chartData = [];
+var reportTimer;
 
-// default data
-var principal, interest;
-for (var i = 0; i < 3; i ++) {
-	var investment = new Object();
-	principal = Math.floor (Math.random () * 20000);
-	interest = Math.floor (Math.random () * 10) / 100;
-	investment.p = principal;
-	investment.i = interest;
-	investments.push (investment);
+function loadReportWhenReady (reportId, format) {
+ 	$.post (
+		"/checkReport",
+		{ id: reportId,
+			format: format
+		},
+		function (reportPath) {
+			if (reportPath != "pending") {
+				//window.open ("/returnReport?reportPath=" + reportPath, "Download");
+				var form = document.getElementById ("returnReportForm");
+				var input = document.getElementById ("reportPath");
+				input.setAttribute ("value", reportPath);
+				form.submit ();
+				document.getElementById("loading").setAttribute ("class", "invisible");
+				document.getElementById("submitPDF").disabled = false;
+				document.getElementById("submitDOCX").disabled = false;
+				clearInterval (reportTimer);
+			}
+		}, "text");
 }
 
-AmCharts.ready(function () {
+$(document).ready (function aaa () {
+	// Override the submit event
+	$("#reportForm").submit (function bbb (e) {
+		var svgElement, tableElement;
+		svgElement = document.getElementById("chartdiv").firstChild.firstChild;
+		tableElement = document.getElementById("datatable");
+		document.getElementById("svg").value = new XMLSerializer().serializeToString(svgElement);
+		document.getElementById("table").value = new XMLSerializer().serializeToString(tableElement);
+		document.getElementById("loading").setAttribute ("class", "visible");
+		document.getElementById("submitPDF").disabled = true;
+		document.getElementById("submitDOCX").disabled = true;
+		var format = document.getElementById("format").value;
+		var form = $(this);
+		$.post (
+			form.attr ('action'),
+			form.serialize (),
+			function ttt (reportId) {
+				reportTimer = setInterval (function () { loadReportWhenReady (reportId, format); }, 1000);
+			}, "text"
+		);
+		return false;
+	});
 
+	// default data
+	var principal, interest;
+	for (var i = 0; i < 3; i ++) {
+		var investment = new Object();
+		principal = Math.floor (Math.random () * 20000);
+		interest = Math.floor (Math.random () * 10) / 100;
+		investment.p = principal;
+		investment.i = interest;
+		investments.push (investment);
+	}
+});
+
+AmCharts.ready(function () {
 	// hide range input on firefox and ie
 	var rangeIsSupported = (document.getElementById('r0').type === "range");
 
@@ -269,7 +314,14 @@ function submitForm(format) {
 	document.getElementById("svg").value = new XMLSerializer().serializeToString(svgElement);
 	document.getElementById("table").value = new XMLSerializer().serializeToString(tableElement);
 	document.getElementById("format").value = format;
+	document.getElementById("loading").setAttribute ("class", "visible");
+	document.getElementById("submitPDF").disabled = true;
+	document.getElementById("submitDOCX").disabled = true;
 	document.forms["reportForm"].submit();
+}
+
+function setFormat (format) {
+	document.getElementById("format").value = format;
 }
 
 function generateTable() {

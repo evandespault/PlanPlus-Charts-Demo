@@ -87,7 +87,7 @@ Reporter.prototype.createPdf = function () {
 		if (err) throw err;
 
 		// If successful, return the report
-		if (reporter.exists (reportPath)) downloadReport (response, id, format);
+		if (reporter.exists (reportPath)) notifyReportReady (id); // downloadReport (response, id, format);
 		else console.log ('Error: Could not create ' + reportPath + ' (createPdf)');
 	});
 }
@@ -175,7 +175,7 @@ Reporter.prototype.writeZip = function (archive) {
 		if (err) throw err;
 
 		// If successful, return the report
-		if (reporter.exists (reportPath)) downloadReport (response, id, format);
+		if (reporter.exists (reportPath)) notifyReportReady (id); // downloadReport (response, id, format);
 		else console.log ('Error: Could not create ' + reportPath);
 	});
 }

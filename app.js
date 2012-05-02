@@ -72,6 +72,8 @@ app.configure('production', function() {
 // Establish routes
 app.get('/', routes.index);
 app.post('/report', routes.report);
+app.post('/checkReport', routes.checkReport);
+app.post('/returnReport', routes.returnReport);
 
 // Start listening
 app.listen(settings.port);

@@ -1,6 +1,7 @@
 html#root(lang="en")
 	head
 		title= title
+		script(type="text/javascript", src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js")
 		script(type="text/javascript", src="/javascripts/amcharts.js")
 		script(type="text/javascript", src="/javascripts/interest.js")
 	body
@@ -36,12 +37,15 @@ html#root(lang="en")
 					div(class="inv_i")
 						input(class="inv_i_input", type="text", id="i2", name="i2")
 						input(class="inv_i_range", type="range", id="r2", name="r2", min="0", max="0.5", step="0.01")
-		form#reportForm(method="post", action="/report", target="_new")
+		form#reportForm(method="post", action="/report")
 			input(type="text", id="svg", name="svg", style="display:none")
 			input(type="text", id="table", name="table", style="display:none")
 			input(type="text", id="format", name="format", style="display:none")
-			input(type="button", value="Generate PDF report", onclick="submitForm('pdf')")
-			input(type="button", value="Generate DOCX report", onclick="submitForm('docx')")
+			input(type="submit", id="submitPDF", value="Generate PDF report", onclick="setFormat('pdf')")
+			input(type="submit", id="submitDOCX", value="Generate DOCX report", onclick="setFormat('docx')")
+			img(id="loading", src="/images/loading.gif", width="20px", height="20px", class="invisible")
+		form#returnReportForm(method="post", action="/returnReport")
+			input(type="text", id="reportPath", name="reportPath", style="display:none")
 		div#report
 			h3 Projected Income
 			div#chartdiv

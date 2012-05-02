@@ -120,3 +120,16 @@ input {
 .odd_row {
 	background-color: #D3DFF4;
 }
+
+#loading {
+	text-align: bottom;
+	margin-left: 10px;
+}
+
+.invisible {
+	visibility: hidden;
+}
+
+.visible {
+	visibility: visible;
+}
